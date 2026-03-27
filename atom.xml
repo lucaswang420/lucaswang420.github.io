@@ -3,14 +3,14 @@
   <title>CodeVerse | 技术宇宙</title>
   
   <subtitle>探索技术的无限可能</subtitle>
-  <link href="https://vilaswang.github.io/atom.xml" rel="self"/>
+  <link href="https://lucaswang420.github.io/atom.xml" rel="self"/>
   
-  <link href="https://vilaswang.github.io/"/>
+  <link href="https://lucaswang420.github.io/"/>
   <updated>2025-12-29T12:37:47.193Z</updated>
-  <id>https://vilaswang.github.io/</id>
+  <id>https://lucaswang420.github.io/</id>
   
   <author>
-    <name>vilas</name>
+    <name>lucas</name>
     
   </author>
   
@@ -18,8 +18,8 @@
   
   <entry>
     <title>Gemini CLI 在国内网络环境下的完整配置指南</title>
-    <link href="https://vilaswang.github.io/posts/gemini-cli-proxy/"/>
-    <id>https://vilaswang.github.io/posts/gemini-cli-proxy/</id>
+    <link href="https://lucaswang420.github.io/posts/gemini-cli-proxy/"/>
+    <id>https://lucaswang420.github.io/posts/gemini-cli-proxy/</id>
     <published>2025-12-18T01:09:23.000Z</published>
     <updated>2025-12-29T12:37:47.193Z</updated>
     
@@ -36,19 +36,19 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Gemini CLI 和 Claude Code 中配置 GitHub MCP 服务器详解</title>
-    <link href="https://vilaswang.github.io/posts/mcp-github-config/"/>
-    <id>https://vilaswang.github.io/posts/mcp-github-config/</id>
+    <link href="https://lucaswang420.github.io/posts/mcp-github-config/"/>
+    <id>https://lucaswang420.github.io/posts/mcp-github-config/</id>
     <published>2025-12-18T01:09:23.000Z</published>
     <updated>2025-12-18T01:22:09.016Z</updated>
     
@@ -65,19 +65,19 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Windows 环境下配置 GitHub MCP 服务器完整指南</title>
-    <link href="https://vilaswang.github.io/posts/windows-github-mcp/"/>
-    <id>https://vilaswang.github.io/posts/windows-github-mcp/</id>
+    <link href="https://lucaswang420.github.io/posts/windows-github-mcp/"/>
+    <id>https://lucaswang420.github.io/posts/windows-github-mcp/</id>
     <published>2025-12-18T01:09:23.000Z</published>
     <updated>2025-12-18T01:22:18.455Z</updated>
     
@@ -94,19 +94,19 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Antigravity 登录认证完整解决方案（非TUN方法）</title>
-    <link href="https://vilaswang.github.io/posts/56a10ecb/"/>
-    <id>https://vilaswang.github.io/posts/56a10ecb/</id>
+    <link href="https://lucaswang420.github.io/posts/56a10ecb/"/>
+    <id>https://lucaswang420.github.io/posts/56a10ecb/</id>
     <published>2025-12-16T22:30:00.000Z</published>
     <updated>2025-12-27T07:18:11.627Z</updated>
     
@@ -125,31 +125,31 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
-    <category term="IDE编辑器" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/IDE%E7%BC%96%E8%BE%91%E5%99%A8/"/>
+    <category term="IDE编辑器" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/IDE%E7%BC%96%E8%BE%91%E5%99%A8/"/>
     
     
-    <category term="Antigravity" scheme="https://vilaswang.github.io/tags/Antigravity/"/>
+    <category term="Antigravity" scheme="https://lucaswang420.github.io/tags/Antigravity/"/>
     
-    <category term="代理配置" scheme="https://vilaswang.github.io/tags/%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/"/>
+    <category term="代理配置" scheme="https://lucaswang420.github.io/tags/%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE/"/>
     
-    <category term="OAuth认证" scheme="https://vilaswang.github.io/tags/OAuth%E8%AE%A4%E8%AF%81/"/>
+    <category term="OAuth认证" scheme="https://lucaswang420.github.io/tags/OAuth%E8%AE%A4%E8%AF%81/"/>
     
-    <category term="Clash" scheme="https://vilaswang.github.io/tags/Clash/"/>
+    <category term="Clash" scheme="https://lucaswang420.github.io/tags/Clash/"/>
     
-    <category term="Proxifier" scheme="https://vilaswang.github.io/tags/Proxifier/"/>
+    <category term="Proxifier" scheme="https://lucaswang420.github.io/tags/Proxifier/"/>
     
-    <category term="网络配置" scheme="https://vilaswang.github.io/tags/%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/"/>
+    <category term="网络配置" scheme="https://lucaswang420.github.io/tags/%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE/"/>
     
-    <category term="企业环境" scheme="https://vilaswang.github.io/tags/%E4%BC%81%E4%B8%9A%E7%8E%AF%E5%A2%83/"/>
+    <category term="企业环境" scheme="https://lucaswang420.github.io/tags/%E4%BC%81%E4%B8%9A%E7%8E%AF%E5%A2%83/"/>
     
   </entry>
   
   <entry>
     <title>VSCode Qt MSVC 配置指南</title>
-    <link href="https://vilaswang.github.io/posts/55a960b4/"/>
-    <id>https://vilaswang.github.io/posts/55a960b4/</id>
+    <link href="https://lucaswang420.github.io/posts/55a960b4/"/>
+    <id>https://lucaswang420.github.io/posts/55a960b4/</id>
     <published>2025-12-09T06:09:56.000Z</published>
     <updated>2025-12-17T15:36:29.275Z</updated>
     
@@ -166,19 +166,19 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Web 认证方法指南</title>
-    <link href="https://vilaswang.github.io/posts/f2ed900f/"/>
-    <id>https://vilaswang.github.io/posts/f2ed900f/</id>
+    <link href="https://lucaswang420.github.io/posts/f2ed900f/"/>
+    <id>https://lucaswang420.github.io/posts/f2ed900f/</id>
     <published>2025-12-09T06:09:56.000Z</published>
     <updated>2025-12-18T15:49:56.210Z</updated>
     
@@ -189,19 +189,19 @@
     
     
     
-    <category term="Web架构安全" scheme="https://vilaswang.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
+    <category term="Web架构安全" scheme="https://lucaswang420.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>认证系统架构</title>
-    <link href="https://vilaswang.github.io/posts/ab2eaca1/"/>
-    <id>https://vilaswang.github.io/posts/ab2eaca1/</id>
+    <link href="https://lucaswang420.github.io/posts/ab2eaca1/"/>
+    <id>https://lucaswang420.github.io/posts/ab2eaca1/</id>
     <published>2025-12-09T06:09:56.000Z</published>
     <updated>2025-12-18T15:50:18.058Z</updated>
     
@@ -212,19 +212,19 @@
     
     
     
-    <category term="Web架构安全" scheme="https://vilaswang.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
+    <category term="Web架构安全" scheme="https://lucaswang420.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>MariaDB C++ Windows 安装指南</title>
-    <link href="https://vilaswang.github.io/posts/15251b3b/"/>
-    <id>https://vilaswang.github.io/posts/15251b3b/</id>
+    <link href="https://lucaswang420.github.io/posts/15251b3b/"/>
+    <id>https://lucaswang420.github.io/posts/15251b3b/</id>
     <published>2025-12-09T06:09:56.000Z</published>
     <updated>2025-12-17T15:36:29.277Z</updated>
     
@@ -241,21 +241,21 @@
     
     
     
-    <category term="数据库系统" scheme="https://vilaswang.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/"/>
+    <category term="数据库系统" scheme="https://lucaswang420.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/"/>
     
-    <category term="关系型数据库" scheme="https://vilaswang.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <category term="关系型数据库" scheme="https://lucaswang420.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>PostgreSQL C++ Windows 安装指南</title>
-    <link href="https://vilaswang.github.io/posts/b71a62b0/"/>
-    <id>https://vilaswang.github.io/posts/b71a62b0/</id>
+    <link href="https://lucaswang420.github.io/posts/b71a62b0/"/>
+    <id>https://lucaswang420.github.io/posts/b71a62b0/</id>
     <published>2025-12-09T06:09:56.000Z</published>
     <updated>2025-12-17T15:36:29.279Z</updated>
     
@@ -272,21 +272,21 @@
     
     
     
-    <category term="数据库系统" scheme="https://vilaswang.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/"/>
+    <category term="数据库系统" scheme="https://lucaswang420.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/"/>
     
-    <category term="关系型数据库" scheme="https://vilaswang.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
+    <category term="关系型数据库" scheme="https://lucaswang420.github.io/categories/%E6%95%B0%E6%8D%AE%E5%BA%93%E7%B3%BB%E7%BB%9F/%E5%85%B3%E7%B3%BB%E5%9E%8B%E6%95%B0%E6%8D%AE%E5%BA%93/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>IO 事件分类概念</title>
-    <link href="https://vilaswang.github.io/posts/ecdf807f/"/>
-    <id>https://vilaswang.github.io/posts/ecdf807f/</id>
+    <link href="https://lucaswang420.github.io/posts/ecdf807f/"/>
+    <id>https://lucaswang420.github.io/posts/ecdf807f/</id>
     <published>2025-12-09T06:09:55.000Z</published>
     <updated>2025-12-17T15:36:29.263Z</updated>
     
@@ -304,19 +304,19 @@
     
     
     
-    <category term="系统级编程" scheme="https://vilaswang.github.io/categories/%E7%B3%BB%E7%BB%9F%E7%BA%A7%E7%BC%96%E7%A8%8B/"/>
+    <category term="系统级编程" scheme="https://lucaswang420.github.io/categories/%E7%B3%BB%E7%BB%9F%E7%BA%A7%E7%BC%96%E7%A8%8B/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Graphviz 流程图指南</title>
-    <link href="https://vilaswang.github.io/posts/445c44cb/"/>
-    <id>https://vilaswang.github.io/posts/445c44cb/</id>
+    <link href="https://lucaswang420.github.io/posts/445c44cb/"/>
+    <id>https://lucaswang420.github.io/posts/445c44cb/</id>
     <published>2025-12-09T06:09:55.000Z</published>
     <updated>2025-12-18T15:50:20.012Z</updated>
     
@@ -327,19 +327,19 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Drogon Windows 构建指南</title>
-    <link href="https://vilaswang.github.io/posts/58c0a1f/"/>
-    <id>https://vilaswang.github.io/posts/58c0a1f/</id>
+    <link href="https://lucaswang420.github.io/posts/58c0a1f/"/>
+    <id>https://lucaswang420.github.io/posts/58c0a1f/</id>
     <published>2025-12-09T06:09:55.000Z</published>
     <updated>2025-12-17T15:36:29.310Z</updated>
     
@@ -356,19 +356,19 @@
     
     
     
-    <category term="框架库" scheme="https://vilaswang.github.io/categories/%E6%A1%86%E6%9E%B6%E5%BA%93/"/>
+    <category term="框架库" scheme="https://lucaswang420.github.io/categories/%E6%A1%86%E6%9E%B6%E5%BA%93/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>服务器认证 API 规范</title>
-    <link href="https://vilaswang.github.io/posts/ec4e5506/"/>
-    <id>https://vilaswang.github.io/posts/ec4e5506/</id>
+    <link href="https://lucaswang420.github.io/posts/ec4e5506/"/>
+    <id>https://lucaswang420.github.io/posts/ec4e5506/</id>
     <published>2025-12-09T06:09:55.000Z</published>
     <updated>2025-12-18T15:49:58.220Z</updated>
     
@@ -379,19 +379,19 @@
     
     
     
-    <category term="Web架构安全" scheme="https://vilaswang.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
+    <category term="Web架构安全" scheme="https://lucaswang420.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>C++ Web 代理设计架构</title>
-    <link href="https://vilaswang.github.io/posts/95bf2167/"/>
-    <id>https://vilaswang.github.io/posts/95bf2167/</id>
+    <link href="https://lucaswang420.github.io/posts/95bf2167/"/>
+    <id>https://lucaswang420.github.io/posts/95bf2167/</id>
     <published>2025-12-09T06:09:55.000Z</published>
     <updated>2025-12-17T15:36:29.259Z</updated>
     
@@ -408,19 +408,19 @@
     
     
     
-    <category term="软件架构" scheme="https://vilaswang.github.io/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/"/>
+    <category term="软件架构" scheme="https://lucaswang420.github.io/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Claude MCP 配置指南</title>
-    <link href="https://vilaswang.github.io/posts/361d35d7/"/>
-    <id>https://vilaswang.github.io/posts/361d35d7/</id>
+    <link href="https://lucaswang420.github.io/posts/361d35d7/"/>
+    <id>https://lucaswang420.github.io/posts/361d35d7/</id>
     <published>2025-12-09T06:09:54.000Z</published>
     <updated>2025-12-17T15:36:29.274Z</updated>
     
@@ -437,19 +437,19 @@
     
     
     
-    <category term="开发工具" scheme="https://vilaswang.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
+    <category term="开发工具" scheme="https://lucaswang420.github.io/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>mTLS 证书生成指南</title>
-    <link href="https://vilaswang.github.io/posts/cb45c274/"/>
-    <id>https://vilaswang.github.io/posts/cb45c274/</id>
+    <link href="https://lucaswang420.github.io/posts/cb45c274/"/>
+    <id>https://lucaswang420.github.io/posts/cb45c274/</id>
     <published>2025-12-09T06:09:54.000Z</published>
     <updated>2025-12-18T15:49:44.728Z</updated>
     
@@ -460,19 +460,19 @@
     
     
     
-    <category term="Web架构安全" scheme="https://vilaswang.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
+    <category term="Web架构安全" scheme="https://lucaswang420.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>文件管理 API 规范</title>
-    <link href="https://vilaswang.github.io/posts/eed6fb04/"/>
-    <id>https://vilaswang.github.io/posts/eed6fb04/</id>
+    <link href="https://lucaswang420.github.io/posts/eed6fb04/"/>
+    <id>https://lucaswang420.github.io/posts/eed6fb04/</id>
     <published>2025-12-09T06:09:54.000Z</published>
     <updated>2025-12-17T15:36:29.297Z</updated>
     
@@ -489,19 +489,19 @@
     
     
     
-    <category term="Web架构安全" scheme="https://vilaswang.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
+    <category term="Web架构安全" scheme="https://lucaswang420.github.io/categories/Web%E6%9E%B6%E6%9E%84%E5%AE%89%E5%85%A8/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>FileZilla 端口转发指南</title>
-    <link href="https://vilaswang.github.io/posts/33eb4929/"/>
-    <id>https://vilaswang.github.io/posts/33eb4929/</id>
+    <link href="https://lucaswang420.github.io/posts/33eb4929/"/>
+    <id>https://lucaswang420.github.io/posts/33eb4929/</id>
     <published>2025-12-09T06:09:54.000Z</published>
     <updated>2025-12-17T15:36:29.284Z</updated>
     
@@ -518,19 +518,19 @@
     
     
     
-    <category term="云原生运维" scheme="https://vilaswang.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F%E8%BF%90%E7%BB%B4/"/>
+    <category term="云原生运维" scheme="https://lucaswang420.github.io/categories/%E4%BA%91%E5%8E%9F%E7%94%9F%E8%BF%90%E7%BB%B4/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>Qt 下载器需求规范</title>
-    <link href="https://vilaswang.github.io/posts/6ee89f12/"/>
-    <id>https://vilaswang.github.io/posts/6ee89f12/</id>
+    <link href="https://lucaswang420.github.io/posts/6ee89f12/"/>
+    <id>https://lucaswang420.github.io/posts/6ee89f12/</id>
     <published>2025-12-09T06:09:54.000Z</published>
     <updated>2025-12-18T15:50:00.259Z</updated>
     
@@ -541,21 +541,21 @@
     
     
     
-    <category term="软件架构" scheme="https://vilaswang.github.io/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/"/>
+    <category term="软件架构" scheme="https://lucaswang420.github.io/categories/%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84/"/>
     
     
-    <category term="技术文档" scheme="https://vilaswang.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
+    <category term="技术文档" scheme="https://lucaswang420.github.io/tags/%E6%8A%80%E6%9C%AF%E6%96%87%E6%A1%A3/"/>
     
-    <category term="指南" scheme="https://vilaswang.github.io/tags/%E6%8C%87%E5%8D%97/"/>
+    <category term="指南" scheme="https://lucaswang420.github.io/tags/%E6%8C%87%E5%8D%97/"/>
     
   </entry>
   
   <entry>
     <title>FileZilla 内网穿透配置指南</title>
-    <link href="https://vilaswang.github.io/posts/2acf74bd/"/>
-    <id>https://vilaswang.github.io/posts/2acf74bd/</id>
+    <link href="https://lucaswang420.github.io/posts/2acf74bd/"/>
+    <id>https://lucaswang420.github.io/posts/2acf74bd/</id>
     <published>2025-12-09T04:59:14.000Z</published>
-    <updated>2025-12-17T15:36:29.265Z</updated>
+    <updated>2026-03-27T07:12:05.299Z</updated>
     
     <content type="html"><![CDATA[<h3 id="🛠️-详细配置步骤"><a href="#🛠️-详细配置步骤" class="headerlink" title="🛠️ 详细配置步骤"></a>🛠️ 详细配置步骤</h3><h4 id="1-安装与配置FileZilla-Server"><a href="#1-安装与配置FileZilla-Server" class="headerlink" title="1. 安装与配置FileZilla Server"></a>1. 安装与配置FileZilla Server</h4><ul><li><p><strong>下载与安装</strong><br>在您的内网服务器上，从FileZilla官网下载FileZilla Server并安装。</p><blockquote><p><strong>注意</strong>: 本指南基于 FileZilla Server 经典版本 (0.9.x) 的界面描述。如果您使用的是 1.x 或更高版本，管理界面可能有所不同（通常为基于Web的仪表板），但核心配置概念（用户、被动模式端口）是通用的。</p></blockquote><p>安装过程中，如果弹出“连接到服务器”配置界面，通常使用默认设置（如主机名<code>127.0.0.1</code>，管理端口）即可，点击“连接”或“确定”。</p></li><li><p><strong>创建用户与设置密码</strong><br>安装完成后，在FileZilla Server管理界面中：</p><ul><li>点击 <strong>Edit</strong> -&gt; <strong>Users</strong> 进入用户设置。</li><li>在 <strong>General</strong>（通用）页面，点击 <strong>Add</strong> 按钮创建新用户（例如 <code>user1</code>）。</li><li>为该用户设置密码。</li></ul></li><li><p><strong>设置共享文件夹</strong><br>创建用户后，系统通常会提示需设置至少一个共享文件夹。</p><ul><li>在 <strong>Shared folders</strong> 页面，点击 <strong>Add</strong> 按钮，选择您希望外网能访问下载文件的内网目录。</li><li>根据需要，在 <strong>Files</strong> 和 <strong>Directories</strong> 下为用户设置目录的读取（可下载）、写入、删除等权限。至少需要开启<strong>读取</strong>权限，才能允许文件下载。</li></ul></li></ul><h4 id="2-配置花生壳内网穿透"><a href="#2-配置花生壳内网穿透" class="headerlink" title="2. 配置花生壳内网穿透"></a>2. 配置花生壳内网穿透</h4><ul><li><strong>安装花生壳并添加映射</strong><br>在内网服务器下载、安装并登录花生壳客户端。<ul><li>在花生壳客户端的 <strong>内网穿透</strong> 页面，点击 <strong>+</strong> 按钮添加映射。</li><li><strong>应用名称</strong>：可自定义，如”FTP-Control”。</li><li><strong>应用类型</strong>：选择 <strong>TCP</strong>。</li><li><strong>内网主机IP</strong>：填写运行FileZilla Server的内网服务器IP地址（通常是<code>192.168.x.x</code>形式的地址）。<strong>注意</strong>：不要使用<code>localhost</code>或<code>127.0.0.1</code>。</li><li><strong>内网端口</strong>：填写FTP服务的控制端口，默认为 <strong>21</strong>。</li><li>点击保存，花生壳会生成一个FTP控制通道的外网访问地址（包含域名和端口）。</li></ul></li></ul><h4 id="3-配置FTP被动模式与数据传输端口"><a href="#3-配置FTP被动模式与数据传输端口" class="headerlink" title="3. 配置FTP被动模式与数据传输端口"></a>3. 配置FTP被动模式与数据传输端口</h4><p>FTP协议使用<strong>21端口</strong>建立控制连接，使用<strong>被动模式下的其他端口</strong>进行数据传输。因此，必须单独映射数据传输端口。</p><ul><li><p><strong>在花生壳中映射数据端口</strong><br>按照上述同样方法，在花生壳中为FTP被动模式端口再添加一条映射：</p><ul><li><strong>应用名称</strong>：可自定义，如”FTP-Data”。</li><li><strong>应用类型</strong>：<strong>TCP</strong>。</li><li><strong>内网主机IP</strong>：与上一步相同。</li><li><strong>内网端口</strong>：可<strong>任意填写一个未占用的端口号</strong>，例如 <code>12345</code>。</li><li>保存后，花生壳会生成第二个外网访问地址，<strong>请记下这个新地址的外网端口号</strong>（例如 <code>10418</code>），下一步需要用到。</li></ul><p>添加映射后，可能需要<strong>编辑这条映射</strong>，将 <strong>内网端口</strong> 修改为与花生壳生成的 <strong>外网端口一致</strong>（例如将内网端口从<code>12345</code>改为<code>10418</code>），以确保数据通道正常传输。</p></li><li><p><strong>在FileZilla Server中设置被动模式</strong><br>现在需要在FileZilla Server中告知它使用这个映射好的端口。</p><ul><li>打开FileZilla Server，点击 <strong>Edit</strong> -&gt; <strong>Settings</strong>，进入 <strong>Passive mode settings</strong> (被动模式设置)。</li><li>勾选 <strong>Use custom port range</strong> (使用自定义端口范围)。</li><li>在输入框中，<strong>填写花生壳为数据通道生成的外网端口号</strong>（例如上一步的 <code>10418</code>）。如果只使用单个端口，起始和结束端口填相同的即可。</li><li><strong>关键步骤</strong>：在 <strong>Use the following IP</strong> 下方，可能需要填写花生壳生成的外网访问<strong>域名</strong>（即FTP控制通道的域名）。这能确保FTP服务器将正确的地址告知外网客户端。</li></ul></li></ul><h4 id="4-设置Windows防火墙"><a href="#4-设置Windows防火墙" class="headerlink" title="4. 设置Windows防火墙"></a>4. 设置Windows防火墙</h4><p>如果内网服务器的Windows防火墙已开启，需要放行FileZilla Server相关端口。</p><ul><li>在 <strong>Windows Defender 防火墙</strong> 中，添加入站规则。</li><li>允许之前用到的端口（如控制端口<code>21</code>和您在花生壳设置的数据端口<code>10418</code>）的TCP连接。</li></ul><h4 id="5-外网连接测试"><a href="#5-外网连接测试" class="headerlink" title="5. 外网连接测试"></a>5. 外网连接测试</h4><p>在另一台外网电脑上，使用任何FTP客户端（如FileZilla Client）进行测试。</p><ul><li><strong>主机&#x2F;地址</strong>：填写花生壳为<strong>控制通道</strong>生成的外网访问地址（域名和端口，例如 <code>xxxx.vicp.cc:21</code> 处的端口）。</li><li><strong>用户名与密码</strong>：填写您在FileZilla Server中设置的账号（如 <code>user1</code>）和密码。</li><li><strong>传输模式</strong>：在FTP客户端的站点设置中，<strong>传输模式请选择“被动模式”</strong>。</li><li>连接成功后，您应该能看到内网共享的文件并可进行下载。</li></ul><h3 id="💡-关键配置提醒与排查"><a href="#💡-关键配置提醒与排查" class="headerlink" title="💡 关键配置提醒与排查"></a>💡 关键配置提醒与排查</h3><ul><li><strong>核心原理</strong>：成功的关键在于理解FTP需要<strong>两个通道</strong>（控制+数据），并正确配置<strong>被动模式</strong>及对应的<strong>端口映射</strong>。</li><li><strong>域名与IP</strong>：在FileZilla Server的被动模式设置中，”Use the following IP”处建议填写花生壳生成的<strong>域名</strong>，而非IP地址。</li><li><strong>防火墙</strong>：确保内网服务器的防火墙不会阻挡连接。</li><li><strong>花生壳版本</strong>：免费版花生壳通常支持添加2条映射，刚好满足FTP控制与数据通道的需求。如果数据端口不理想，可以删除映射后重新添加。</li></ul>]]></content>
     
@@ -564,12 +564,12 @@
     
     
     
-    <category term="系统运维管理" scheme="https://vilaswang.github.io/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/"/>
+    <category term="系统运维管理" scheme="https://lucaswang420.github.io/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/"/>
     
-    <category term="Windows服务管理" scheme="https://vilaswang.github.io/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/Windows%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
+    <category term="Windows服务管理" scheme="https://lucaswang420.github.io/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/Windows%E6%9C%8D%E5%8A%A1%E7%AE%A1%E7%90%86/"/>
     
     
-    <category term="Windows" scheme="https://vilaswang.github.io/tags/Windows/"/>
+    <category term="Windows" scheme="https://lucaswang420.github.io/tags/Windows/"/>
     
   </entry>
   
