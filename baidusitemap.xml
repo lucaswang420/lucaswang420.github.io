@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://lucaswang420.github.io/posts/windows-github-mcp/</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
+  <url>
+    <loc>https://lucaswang420.github.io/posts/gemini-cli-proxy/</loc>
+    <lastmod>2026-04-03</lastmod>
+  </url>
+  <url>
     <loc>https://lucaswang420.github.io/posts/2ef3f333/</loc>
     <lastmod>2026-04-03</lastmod>
   </url>
@@ -37,10 +45,6 @@
     <lastmod>2026-03-27</lastmod>
   </url>
   <url>
-    <loc>https://lucaswang420.github.io/posts/gemini-cli-proxy/</loc>
-    <lastmod>2025-12-29</lastmod>
-  </url>
-  <url>
     <loc>https://lucaswang420.github.io/posts/445c44cb/</loc>
     <lastmod>2025-12-18</lastmod>
   </url>
@@ -62,14 +66,6 @@
   </url>
   <url>
     <loc>https://lucaswang420.github.io/posts/cb45c274/</loc>
-    <lastmod>2025-12-18</lastmod>
-  </url>
-  <url>
-    <loc>https://lucaswang420.github.io/posts/windows-github-mcp/</loc>
-    <lastmod>2025-12-18</lastmod>
-  </url>
-  <url>
-    <loc>https://lucaswang420.github.io/posts/mcp-github-config/</loc>
     <lastmod>2025-12-18</lastmod>
   </url>
   <url>
