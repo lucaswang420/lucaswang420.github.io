@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CodeVerse | 技术宇宙 - 探索技术的无限可能</title><meta name="author" content="lucas"><meta name="copyright" content="lucas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="CodeVerse | 技术宇宙 - 专注于 C++、Qt、系统架构与性能优化的技术知识库。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="CodeVerse | 技术宇宙">
+<meta property="og:url" content="https://lucaswang420.github.io/page/7/index.html">
+<meta property="og:site_name" content="CodeVerse | 技术宇宙">
+<meta property="og:description" content="CodeVerse | 技术宇宙 - 专注于 C++、Qt、系统架构与性能优化的技术知识库。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lucaswang420.github.io/img/butterfly-icon.png">
+<meta property="article:author" content="lucas">
+<meta property="article:tag" content="C++, Qt, 架构设计, 性能优化, CodeVerse, 技术博客">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lucaswang420.github.io/img/butterfly-icon.png"><script type="application/ld+json"></script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lucaswang420.github.io/page/7/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CodeVerse | 技术宇宙',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'home'
+}</script><style> .top-announcement { background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #333; text-align: center; padding: 10px 0; font-size: 14px; font-weight: bold; width: 100%; border-bottom: 1px solid #eee; } </style><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="CodeVerse | 技术宇宙" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: [object Object];"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">35</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="page" id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(/images/bg.png);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">CodeVerse | 技术宇宙</span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="site-info"><h1 id="site-title">CodeVerse | 技术宇宙</h1><div id="site_social_icons"><a class="social-icon" href="https://github.com/lucaswang420/" target="_blank" title="fab fa-github"><i class="Github"></i></a></div></div><div id="scroll-down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout" id="content-inner"><div class="recent-posts nc" id="recent-posts"><div class="recent-post-items"><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/posts/18f0987e/" title="Boost b2 参数参考">Boost b2 参数参考</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-12-04T05:13:20.000Z" title="发表于 2025-12-04 13:13:20">2025-12-04</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-17T15:36:29.305Z" title="更新于 2025-12-17 23:36:29">2025-12-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/">C++核心开发</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/C-%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%BF%9B%E9%98%B6/">C++基础与进阶</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Boost/">Boost</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/b2/">b2</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/bjam/">bjam</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%9E%84%E5%BB%BA%E5%B7%A5%E5%85%B7/">构建工具</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%BC%96%E8%AF%91%E5%8F%82%E6%95%B0/">编译参数</a></span></div><div class="content">Boost b2 参数参考目录 概述 核心参数 库选择参数 构建属性参数 路径与输出参数 平台与架构参数 实用编译示例 脚本与最佳实践  概述b2（其前身为 bjam）是 Boost C++ 库的官方构建引擎。它是一个功能强大的命令行工具，允许开发者通过丰富的参数精确控制编译过程。 基本语法12# Boost b2 参数参考./b2 [options] [properties] [target]  获取帮助12345# Boost b2 参数参考./b2 --help# Boost b2 参数参考./b2 --show-libraries  核心参数这些参数控制构建的基本行为。  stage: 只编译库文件（例如 .a, .so, .lib, .dll），并将它们放置在 stagedir 指定的目录（默认为 stage/lib）。这是最常用的目标。 install: 除了编译库文件，还会将 Boost 的头文件复制到 prefix 指定的目录。 -j&lt;N&gt;: 设置并行编译的任务数，&lt;N&gt; 通常设为 CPU 的核心数以最大化编译速度。例如 -j8 或 -j$...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/posts/cf6de084/" title="Linux atop 监控工具使用指南">Linux atop 监控工具使用指南</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-12-04T05:13:19.000Z" title="发表于 2025-12-04 13:13:19">2025-12-04</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2025-12-17T15:36:29.264Z" title="更新于 2025-12-17 23:36:29">2025-12-17</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/">系统运维管理</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/%E7%B3%BB%E7%BB%9F%E8%BF%90%E7%BB%B4%E7%AE%A1%E7%90%86/%E7%9B%91%E6%8E%A7%E4%B8%8E%E8%AF%8A%E6%96%AD/">监控与诊断</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/atop/">atop</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E7%B3%BB%E7%BB%9F%E7%9B%91%E6%8E%A7/">系统监控</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E6%80%A7%E8%83%BD%E5%88%86%E6%9E%90/">性能分析</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Linux/">Linux</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Ubuntu/">Ubuntu</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/netatop/">netatop</a></span></div><div class="content">Linux atop 监控工具使用指南目录 概述 第一步：安装 atop 第二步：安装 netatop 网络监控模块 (可选) 第三步：配置 atop 服务 第四步：使用 atop 第五步：分析历史日志 附录：监控字段说明 常见问题  概述atop 是一个高级的、可交互的 Linux 系统性能监控工具。与 top、htop 等工具相比，atop 最强大的特性是它能够记录历史性能数据，并允许你像播放视频一样“回放”系统在过去某个时间点的状态，极大地便利了问题排查和性能分析。 主要特性 全面监控: 监控 CPU、内存、交换空间、磁盘 I&#x2F;O、网络以及各个进程的资源使用情况。 历史记录: 默认以10分钟为间隔，将系统快照记录到日志文件中，并保留28天。 进程级详情: 记录每个进程的资源使用、状态、退出码等详细信息。 高亮显示: 对过载的系统资源使用不同颜色高亮显示，一目了然。  第一步：安装 atopUbuntu&#x2F;Debian12345678# Linux atop 监控工具使用指南sudo apt update# Linux atop 监控工具使用指南sudo a...</div></div></div><div class="recent-post-item"><div class="recent-post-info no-cover"><a class="article-title" href="/posts/9b28b992/" title="Qt 框架概述">Qt 框架概述</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time class="post-meta-date-created" datetime="2025-09-21T00:00:00.000Z" title="发表于 2025-09-21 08:00:00">2025-09-21</time><span class="article-meta-separator">|</span><i class="fas fa-history"></i><span class="article-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-03-27T07:12:05.300Z" title="更新于 2026-03-27 15:12:05">2026-03-27</time></span><span class="article-meta"><span class="article-meta-separator">|</span><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/">C++核心开发</a><i class="fas fa-angle-right article-meta-link"></i><i class="fas fa-inbox"></i><a class="article-meta__categories" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/Qt%E6%A1%86%E6%9E%B6/">Qt框架</a></span><span class="article-meta tags"><span class="article-meta-separator">|</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/Qt/">Qt</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/C/">C++</a><span class="article-meta-link">•</span><i class="fas fa-tag"></i><a class="article-meta__tags" href="/tags/%E5%AD%A6%E4%B9%A0%E8%B7%AF%E5%BE%84/">学习路径</a></span></div><div class="content">Qt 框架概述📚 知识库概述本知识库提供了Qt框架的完整学习资源，涵盖了从基础入门到高级应用的全方位技术指南。所有文档都遵循统一的标准，包含完整的代码示例和最佳实践。 🗂️ 文档分类结构🚀 核心特性 (Core-Features) Qt Model-View 架构指南 Model-View-Delegate 模式详解 自定义 Model 和 Delegate 使用 ProxyModel 实现排序和过滤   Qt 多线程编程指南 QThread 的正确使用模式 (Worker-Object) 线程同步与 QtConcurrent 并发框架   Qt 国际化 (i18n) 指南 使用 tr、lupdate、lrelease 和 QTranslator 的标准工作流程 动态语言切换与 QLocale 本地化   Qt 单元测试指南 Qt Test 框架、数据驱动测试与 GUI 测试 模拟对象 (Mocking) 与持续集成    🎨 GUI编程 (GUI) QPainter 完整指南 2D图形绘制、文本渲染、图像处理 渐变、变换与高级特效 自定义控件开发实例   QSS 样式表...</div></div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/6/#content-inner"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/#content-inner">6</a><span class="page-number current">7</span></div></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lucas</div><div class="author-info-description">CodeVerse | 技术宇宙 - 专注于 C++、Qt、系统架构与性能优化的技术知识库。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">63</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">164</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">35</div></a></div><a id="card-info-btn" href="/about/"><i class="fa fa-paper-plane"></i><span>关于</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lucaswang420/" target="_blank" title="fab fa-github"><i class="Github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🚀 欢迎来到 CodeVerse！这里专注于深度技术解析与实战经验分享。</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/2ef3f333/" title="OpenClaw容器化部署完全手册 Docker Compose实战教程">OpenClaw容器化部署完全手册 Docker Compose实战教程</a><time datetime="2026-04-03T02:32:00.000Z" title="发表于 2026-04-03 10:32:00">2026-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ab75a4af/" title="Xshell安全连接GCP服务器 SSH隧道与密钥认证配置">Xshell安全连接GCP服务器 SSH隧道与密钥认证配置</a><time datetime="2026-04-03T02:31:00.000Z" title="发表于 2026-04-03 10:31:00">2026-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/5949fa3d/" title="GCP云服务器创建配置指南 OpenClaw部署专用">GCP云服务器创建配置指南 OpenClaw部署专用</a><time datetime="2026-04-03T02:30:00.000Z" title="发表于 2026-04-03 10:30:00">2026-04-03</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/gemini-cli-proxy/" title="Gemini CLI 在国内网络环境下的完整配置指南">Gemini CLI 在国内网络环境下的完整配置指南</a><time datetime="2025-12-18T01:09:23.000Z" title="发表于 2025-12-18 09:09:23">2025-12-18</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/mcp-github-config/" title="Gemini CLI 和 Claude Code 中配置 GitHub MCP 服务器详解">Gemini CLI 和 Claude Code 中配置 GitHub MCP 服务器详解</a><time datetime="2025-12-18T01:09:23.000Z" title="发表于 2025-12-18 09:09:23">2025-12-18</time></div></div></div></div><div class="card-widget card-categories"><div class="item-headline">
+            <i class="fas fa-folder-open"></i>
+            <span>分类</span>
+            <a class="card-more-btn" href="/categories/" title="查看更多">
+      <i class="fas fa-angle-right"></i></a>
+          </div>
+          <ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/"><span class="card-category-list-name">03-开发工具</span><span class="card-category-list-count">1</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/03-%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/05-IDE%E7%BC%96%E8%BE%91%E5%99%A8/"><span class="card-category-list-name">05-IDE编辑器</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E4%BA%91%E5%8E%9F%E7%94%9F%E8%BF%90%E7%BB%B4/"><span class="card-category-list-name">08-云原生运维</span><span class="card-category-list-count">2</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E4%BA%91%E5%8E%9F%E7%94%9F%E8%BF%90%E7%BB%B4/01-%E5%AE%B9%E5%99%A8%E5%8C%96/"><span class="card-category-list-name">01-容器化</span><span class="card-category-list-count">1</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/08-%E4%BA%91%E5%8E%9F%E7%94%9F%E8%BF%90%E7%BB%B4/03-%E4%BA%91%E5%B9%B3%E5%8F%B0/"><span class="card-category-list-name">03-云平台</span><span class="card-category-list-count">1</span></a></li></ul></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/"><span class="card-category-list-name">C++核心开发</span><span class="card-category-list-count">24</span></a><ul class="card-category-list child"><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/C-%E5%9F%BA%E7%A1%80%E4%B8%8E%E8%BF%9B%E9%98%B6/"><span class="card-category-list-name">C++基础与进阶</span><span class="card-category-list-count">3</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/C-%E6%A0%B8%E5%BF%83%E5%BC%80%E5%8F%91/Qt%E6%A1%86%E6%9E%B6/"><span class="card-category-list-name">Qt框架</span><span class="card-category-list-count">16</span></a></li></ul></li>
+          </ul></div><div class="card-widget card-tags"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/%E7%BC%96%E8%AF%91%E9%83%A8%E7%BD%B2/" style="font-size: 1.1em; color: #999">编译部署</a> <a href="/tags/Apache/" style="font-size: 1.3em; color: #99a1ac">Apache</a> <a href="/tags/QAudioInput/" style="font-size: 1.1em; color: #999">QAudioInput</a> <a href="/tags/ab/" style="font-size: 1.1em; color: #999">ab</a> <a href="/tags/%E6%A0%B7%E5%BC%8F%E8%A1%A8/" style="font-size: 1.1em; color: #999">样式表</a> <a href="/tags/Boost/" style="font-size: 1.5em; color: #99a9bf">Boost</a> <a href="/tags/DH/" style="font-size: 1.3em; color: #99a1ac">DH</a> <a href="/tags/Antigravity/" style="font-size: 1.1em; color: #999">Antigravity</a> <a href="/tags/Drogon/" style="font-size: 1.1em; color: #999">Drogon</a> <a href="/tags/%E5%AE%89%E5%85%A8/" style="font-size: 1.1em; color: #999">安全</a></div></div><div class="card-widget card-archives">
+    <div class="item-headline">
+      <i class="fas fa-archive"></i>
+      <span>归档</span>
+      
+    </div>
+  
+    <ul class="card-archive-list">
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2026/04/">
+            <span class="card-archive-list-date">
+              四月 2026
+            </span>
+            <span class="card-archive-list-count">3</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/12/">
+            <span class="card-archive-list-date">
+              十二月 2025
+            </span>
+            <span class="card-archive-list-count">59</span>
+          </a>
+        </li>
+      
+        <li class="card-archive-list-item">
+          <a class="card-archive-list-link" href="/archives/2025/09/">
+            <span class="card-archive-list-date">
+              九月 2025
+            </span>
+            <span class="card-archive-list-count">1</span>
+          </a>
+        </li>
+      
+    </ul>
+  </div><div class="card-widget card-webinfo"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站信息</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">63</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">本站总浏览量 :</div><div class="item-count" id="busuanzi_value_site_pv"><i class="fa-solid fa-spinner fa-spin"></i></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2026-04-03T02:54:45.088Z"><i class="fa-solid fa-spinner fa-spin"></i></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By lucas</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"></div><script> document.addEventListener('DOMContentLoaded', function() { var announcement = document.createElement('div'); announcement.className = 'top-announcement'; announcement.innerHTML = '🚀 欢迎来到 CodeVerse 技术宇宙！'; document.body.insertBefore(announcement, document.body.firstChild); }); </script><script id="canvas_nest" defer="defer" color="102,204,255" opacity="0.6" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.3"></script></div></div></body></html>
