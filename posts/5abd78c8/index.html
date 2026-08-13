@@ -1,0 +1,456 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Git Hooks 代码质量自动化模式 | CodeVerse | 技术宇宙</title><meta name="author" content="lucas"><meta name="copyright" content="lucas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="用 PreToolUse&#x2F;PostToolUse hooks 实现自动格式化、提交前测试、文件保护和凭证守卫">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Git Hooks 代码质量自动化模式">
+<meta property="og:url" content="https://lucaswang420.github.io/posts/5abd78c8/index.html">
+<meta property="og:site_name" content="CodeVerse | 技术宇宙">
+<meta property="og:description" content="用 PreToolUse&#x2F;PostToolUse hooks 实现自动格式化、提交前测试、文件保护和凭证守卫">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lucaswang420.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-08-13T15:24:58.000Z">
+<meta property="article:modified_time" content="2026-08-13T15:24:59.366Z">
+<meta property="article:author" content="lucas">
+<meta property="article:tag" content="automation">
+<meta property="article:tag" content="code-quality">
+<meta property="article:tag" content="git">
+<meta property="article:tag" content="implementation">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lucaswang420.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Git Hooks 代码质量自动化模式",
+  "url": "https://lucaswang420.github.io/posts/5abd78c8/",
+  "image": "https://lucaswang420.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-08-13T15:24:58.000Z",
+  "dateModified": "2026-08-13T15:24:59.366Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lucas",
+      "url": "https://lucaswang420.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lucaswang420.github.io/posts/5abd78c8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Git Hooks 代码质量自动化模式',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style> .top-announcement { background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #333; text-align: center; padding: 10px 0; font-size: 14px; font-weight: bold; width: 100%; border-bottom: 1px solid #eee; } </style><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="CodeVerse | 技术宇宙" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: [object Object];"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">236</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">36</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">CodeVerse | 技术宇宙</span></a><a class="nav-page-title" href="/"><span class="site-name">Git Hooks 代码质量自动化模式</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">Git Hooks 代码质量自动化模式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-13T15:24:59.366Z" title="更新于 2026-08-13 23:24:59">2026-08-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="🔧-Git-Hooks-代码质量自动化模式"><a href="#🔧-Git-Hooks-代码质量自动化模式" class="headerlink" title="🔧 Git Hooks 代码质量自动化模式"></a>🔧 Git Hooks 代码质量自动化模式</h1><blockquote>
+<p><strong>文档信息</strong> | 难度: <code>intermediate</code> | 预计用时: <code>30分钟</code> | 创建: <code>2026-08-12</code></p>
+</blockquote>
+<hr>
+<h2 id="📖-概述"><a href="#📖-概述" class="headerlink" title="📖 概述"></a>📖 概述</h2><p>在 AI 辅助开发的工作流中，代码质量保障不能仅靠人工审查和 CI。一种有效的补充策略是使用 <strong>工具级 Hooks</strong>（如 Claude Code 的 PreToolUse&#x2F;PostToolUse hooks）在编码实时进行质量守护：自动格式化、提交前强制测试、保护生成代码不被手改、阻止凭证泄漏。</p>
+<p>本文档梳理一套 Git Hooks 代码质量自动化模式，涵盖编辑后自动格式化、提交前测试门禁、文件保护（ORM 模型、生产配置）、凭证守卫（占位符检测），以及禁止危险操作（直接 push）。</p>
+<h2 id="🎯-学习目标"><a href="#🎯-学习目标" class="headerlink" title="🎯 学习目标"></a>🎯 学习目标</h2><p>通过本文档，您将掌握：</p>
+<ul>
+<li>PostToolUse hook 实现编辑后自动格式化</li>
+<li>PreToolUse hook 实现提交前强制测试门禁</li>
+<li>文件保护策略：阻止对生成代码和敏感配置的修改</li>
+<li>凭证守卫：检测占位符凭证防止泄漏</li>
+<li>危险操作拦截：禁止 <code>git push</code> 直推</li>
+</ul>
+<hr>
+<h2 id="📚-核心内容"><a href="#📚-核心内容" class="headerlink" title="📚 核心内容"></a>📚 核心内容</h2><h3 id="1-基础概念"><a href="#1-基础概念" class="headerlink" title="1. 基础概念"></a>1. 基础概念</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">graph LR</span><br><span class="line">    subgraph &quot;PreToolUse Hooks&quot;</span><br><span class="line">        P1[&quot;git commit&lt;br/&gt;→ 强制测试&quot;]</span><br><span class="line">        P2[&quot;Edit/Write&lt;br/&gt;→ 文件保护&quot;]</span><br><span class="line">        P3[&quot;git push&lt;br/&gt;→ 禁止&quot;]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph &quot;PostToolUse Hooks&quot;</span><br><span class="line">        F1[&quot;Edit .cc/.h&lt;br/&gt;→ clang-format&quot;]</span><br><span class="line">        F2[&quot;Edit .py&lt;br/&gt;→ autopep8&quot;]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph &quot;Deny Rules&quot;</span><br><span class="line">        D1[&quot;git push *&quot;]</span><br><span class="line">        D2[&quot;Read .env*&quot;]</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2. 实现原理"></a>2. 实现原理</h3><p>以下配置以 Claude Code 的 <code>settings.json</code> 为例（<code>.claude/settings.json</code>），但模式适用于任何支持 PreToolUse&#x2F;PostToolUse hooks 的 AI 编码工具。</p>
+<h4 id="2-1-编辑后自动格式化（PostToolUse）"><a href="#2-1-编辑后自动格式化（PostToolUse）" class="headerlink" title="2.1 编辑后自动格式化（PostToolUse）"></a>2.1 编辑后自动格式化（PostToolUse）</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;PostToolUse&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Edit&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if [[ \&quot;$CLAUDE_FILE_PATH\&quot; =~ \\.(cc|h|cpp|hpp)$ ]]; then clang-format -i \&quot;$CLAUDE_FILE_PATH\&quot;; fi&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>设计要点</strong>：</p>
+<ul>
+<li>匹配 <code>Edit</code> 工具调用（文件编辑后触发）</li>
+<li>只对 <code>.cc</code>、<code>.h</code>、<code>.cpp</code>、<code>.hpp</code> 文件运行 <code>clang-format</code></li>
+<li>排除 <code>models/</code> 目录（生成代码不应被格式化或修改）</li>
+</ul>
+<h4 id="2-2-提交前强制测试门禁（PreToolUse-on-git-commit）"><a href="#2-2-提交前强制测试门禁（PreToolUse-on-git-commit）" class="headerlink" title="2.2 提交前强制测试门禁（PreToolUse on git commit）"></a>2.2 提交前强制测试门禁（PreToolUse on git commit）</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;PreToolUse&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Bash&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if echo \&quot;$CLAUDE_TOOL_INPUT\&quot; | grep -q &#x27;git commit&#x27;; then if [ ! -d &#x27;build/tests&#x27; ]; then echo &#x27;ERROR: build/tests does not exist. Run build first.&#x27;; exit 1; fi; cd build/tests &amp;&amp; ctest --output-on-failure || &#123; echo &#x27;ERROR: Tests failed. Commit blocked.&#x27;; exit 1; &#125;; fi&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>设计要点</strong>：</p>
+<ul>
+<li>拦截 <code>git commit</code> 命令（通过 Bash 工具的 input 检测）</li>
+<li>先检查 <code>build/tests</code> 目录是否存在（确保项目已构建）</li>
+<li>运行 <code>ctest --output-on-failure</code>，失败则阻断提交</li>
+<li>用 <code>exit 1</code> 阻断工具调用，错误信息反馈给 AI 工具</li>
+</ul>
+<h4 id="2-3-文件保护（PreToolUse-on-Edit-Write）"><a href="#2-3-文件保护（PreToolUse-on-Edit-Write）" class="headerlink" title="2.3 文件保护（PreToolUse on Edit&#x2F;Write）"></a>2.3 文件保护（PreToolUse on Edit&#x2F;Write）</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;PreToolUse&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Edit|Write&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if [[ \&quot;$CLAUDE_FILE_PATH\&quot; =~ /models/ ]]; then echo &#x27;ERROR: ORM models under models/ are generated by drogon_ctl. Do not hand-edit. Update the schema and re-run generate-models instead.&#x27;; exit 1; fi&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if [[ \&quot;$CLAUDE_FILE_PATH\&quot; =~ config\\.prod\\.json$ ]]; then echo &#x27;ERROR: config.prod.json is protected. Use environment variables for production overrides.&#x27;; exit 1; fi&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>保护的文件类型</strong>：</p>
+<table>
+<thead>
+<tr>
+<th>文件</th>
+<th>保护原因</th>
+<th>替代方案</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>models/**</code></td>
+<td>ORM 生成代码，手改会被重新生成覆盖</td>
+<td>改 schema 后重新生成</td>
+</tr>
+<tr>
+<td><code>config.prod.json</code></td>
+<td>生产配置含敏感信息</td>
+<td>用环境变量覆盖</td>
+</tr>
+<tr>
+<td>含 <code>TODO.*REPLACE.*CREDENTIAL</code> 的文件</td>
+<td>占位符凭证未替换</td>
+<td>先替换凭证再提交</td>
+</tr>
+</tbody></table>
+<h4 id="2-4-凭证守卫"><a href="#2-4-凭证守卫" class="headerlink" title="2.4 凭证守卫"></a>2.4 凭证守卫</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;PreToolUse&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;matcher&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Edit|Write&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;hooks&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">          <span class="punctuation">&#123;</span></span><br><span class="line">            <span class="attr">&quot;type&quot;</span><span class="punctuation">:</span> <span class="string">&quot;command&quot;</span><span class="punctuation">,</span></span><br><span class="line">            <span class="attr">&quot;command&quot;</span><span class="punctuation">:</span> <span class="string">&quot;if grep -q &#x27;TODO.*REPLACE.*CREDENTIAL&#x27; \&quot;$CLAUDE_FILE_PATH\&quot; 2&gt;/dev/null; then echo &#x27;WARNING: File contains placeholder credentials. Ensure they are replaced before committing.&#x27;; fi&quot;</span></span><br><span class="line">          <span class="punctuation">&#125;</span></span><br><span class="line">        <span class="punctuation">]</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-5-危险操作拦截（Deny-Rules）"><a href="#2-5-危险操作拦截（Deny-Rules）" class="headerlink" title="2.5 危险操作拦截（Deny Rules）"></a>2.5 危险操作拦截（Deny Rules）</h4><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;permissions&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;deny&quot;</span><span class="punctuation">:</span> <span class="punctuation">[</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;pattern&quot;</span><span class="punctuation">:</span> <span class="string">&quot;git push *&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Direct push is forbidden. Create a PR for human review.&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">      <span class="punctuation">&#123;</span></span><br><span class="line">        <span class="attr">&quot;pattern&quot;</span><span class="punctuation">:</span> <span class="string">&quot;Read .env*&quot;</span><span class="punctuation">,</span></span><br><span class="line">        <span class="attr">&quot;description&quot;</span><span class="punctuation">:</span> <span class="string">&quot;.env files may contain secrets.&quot;</span></span><br><span class="line">      <span class="punctuation">&#125;</span></span><br><span class="line">    <span class="punctuation">]</span></span><br><span class="line">  <span class="punctuation">&#125;</span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>设计要点</strong>：</p>
+<ul>
+<li><code>git push</code> 被完全禁止——强制通过 PR 流程进行人工审查</li>
+<li><code>.env*</code> 文件读取被拒绝——防止 AI 工具读取和泄漏环境变量中的密钥</li>
+<li>Deny 规则比 hooks 更严格——直接拒绝工具调用，不执行</li>
+</ul>
+<h3 id="3-最佳实践"><a href="#3-最佳实践" class="headerlink" title="3. 最佳实践"></a>3. 最佳实践</h3><h4 id="3-1-Hook-的分层策略"><a href="#3-1-Hook-的分层策略" class="headerlink" title="3.1 Hook 的分层策略"></a>3.1 Hook 的分层策略</h4><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    L1[&quot;Deny Rules&lt;br/&gt;(最严格, 完全禁止)&quot;]</span><br><span class="line">    L2[&quot;PreToolUse Hooks&lt;br/&gt;(条件检查, 可阻断)&quot;]</span><br><span class="line">    L3[&quot;PostToolUse Hooks&lt;br/&gt;(后处理, 不阻断)&quot;]</span><br><span class="line"></span><br><span class="line">    L1 --&gt;|不执行| Tool[&quot;工具调用&quot;]</span><br><span class="line">    L2 --&gt;|检查通过| Tool</span><br><span class="line">    L2 --&gt;|检查失败| Block[&quot;阻断 + 错误信息&quot;]</span><br><span class="line">    Tool --&gt; L3</span><br><span class="line">    L3 --&gt;|格式化/修复| Result[&quot;最终结果&quot;]</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>层级</th>
+<th>时机</th>
+<th>能否阻断</th>
+<th>用途</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Deny</td>
+<td>工具执行前</td>
+<td>是（不执行）</td>
+<td>危险操作完全禁止</td>
+</tr>
+<tr>
+<td>PreToolUse</td>
+<td>工具执行前</td>
+<td>是（exit 1）</td>
+<td>前置条件检查</td>
+</tr>
+<tr>
+<td>PostToolUse</td>
+<td>工具执行后</td>
+<td>否（后处理）</td>
+<td>自动格式化、修复</td>
+</tr>
+</tbody></table>
+<h4 id="3-2-错误信息设计"><a href="#3-2-错误信息设计" class="headerlink" title="3.2 错误信息设计"></a>3.2 错误信息设计</h4><p>Hook 阻断时的错误信息应该：</p>
+<ul>
+<li><strong>说明原因</strong>：”ORM models are generated by drogon_ctl”</li>
+<li><strong>提供替代方案</strong>：”Update the schema and re-run generate-models”</li>
+<li><strong>不要过于技术化</strong>：AI 工具需要理解错误并采取替代行动</li>
+</ul>
+<h4 id="3-3-与-CI-的互补关系"><a href="#3-3-与-CI-的互补关系" class="headerlink" title="3.3 与 CI 的互补关系"></a>3.3 与 CI 的互补关系</h4><table>
+<thead>
+<tr>
+<th>保障层</th>
+<th>时机</th>
+<th>速度</th>
+<th>覆盖范围</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Hooks</td>
+<td>编码实时</td>
+<td>秒级</td>
+<td>单文件操作</td>
+</tr>
+<tr>
+<td>CI</td>
+<td>提交后</td>
+<td>分钟级</td>
+<td>全项目构建+测试</td>
+</tr>
+<tr>
+<td>人工审查</td>
+<td>PR 审查</td>
+<td>小时级</td>
+<td>设计和逻辑</td>
+</tr>
+</tbody></table>
+<p>Hooks 不是 CI 的替代品，而是<strong>第一道防线</strong>——在错误传播到 CI 之前就拦截。</p>
+<h3 id="4-常见问题"><a href="#4-常见问题" class="headerlink" title="4. 常见问题"></a>4. 常见问题</h3><p><strong>Q: Hook 检查失败后，AI 工具会怎么处理？</strong></p>
+<p>A: 当 PreToolUse hook 返回 <code>exit 1</code> 时，工具调用被阻断，错误信息被反馈给 AI 工具。AI 工具会读取错误信息并尝试替代方案——例如，当编辑 <code>models/</code> 被阻断时，AI 工具会转而修改 schema 文件。</p>
+<p><strong>Q: 为什么不全部用 CI 而要加 hooks？</strong></p>
+<p>A: CI 的反馈周期是分钟级的——提交代码、等待 CI 运行、发现问题、修复、再次提交。Hooks 的反馈是秒级的——在编辑或提交的瞬间就拦截问题。这种即时反馈显著减少了修复成本。</p>
+<p><strong>Q: 如何避免 hook 误报？</strong></p>
+<p>A: Hook 的 matcher 应该精确匹配。例如 <code>clang-format</code> 只对 <code>.cc/.h/.cpp/.hpp</code> 文件触发，不对 <code>.md</code> 或 <code>.json</code> 触发。文件保护规则用路径正则而非简单字符串匹配，避免误伤同名但不同目录的文件。</p>
+<hr>
+<h2 id="🔗-相关文档"><a href="#🔗-相关文档" class="headerlink" title="🔗 相关文档"></a>🔗 相关文档</h2><ul>
+<li>[[cmake-shared-modules-guide]] — CMake 模块中的 WERROR 选项</li>
+<li>[[ci-pipeline-three-gate-design-guide]] — CI 三关卡设计</li>
+<li>[[multi-ai-tool-rules-mirror-guide]] — 多 AI 工具规则镜像结构</li>
+</ul>
+<hr>
+<h2 id="📝-总结"><a href="#📝-总结" class="headerlink" title="📝 总结"></a>📝 总结</h2><p><strong>关键要点</strong>:</p>
+<ol>
+<li><strong>三层质量保障</strong>：Deny（禁止）→ PreToolUse（阻断检查）→ PostToolUse（后处理修复）</li>
+<li><strong>编辑后自动格式化</strong>：消除格式争议，保持代码风格一致</li>
+<li><strong>提交前强制测试</strong>：确保未通过测试的代码无法提交</li>
+<li><strong>文件保护 + 凭证守卫</strong>：防止修改生成代码和泄漏凭证</li>
+<li><strong>与 CI 互补</strong>：Hooks 是秒级第一道防线，CI 是分钟级第二道防线</li>
+</ol>
+<blockquote>
+<p><strong>💡 提示</strong>: Hook 的错误信息质量直接影响 AI 工具的自我修复能力。好的错误信息不仅说明”不能做什么”，更要说明”应该做什么”——这样 AI 工具能在被阻断后自动转向正确的替代方案。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lucaswang420.github.io">lucas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lucaswang420.github.io/posts/5abd78c8/">https://lucaswang420.github.io/posts/5abd78c8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lucaswang420.github.io" target="_blank">CodeVerse | 技术宇宙</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/implementation/">implementation</a><a class="post-meta__tags" href="/tags/automation/">automation</a><a class="post-meta__tags" href="/tags/git/">git</a><a class="post-meta__tags" href="/tags/code-quality/">code-quality</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/1162ddd4/" title="paths.env 跨平台路径单一来源模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">paths.env 跨平台路径单一来源模式</div></div><div class="info-2"><div class="info-item-1">🌐 paths.env 跨平台路径单一来源模式 文档信息 | 难度: intermediate | 预计用时: 30分钟 | 创建: 2026-08-12   📖 概述在跨平台 C++ 项目中，路径管理是一个持续性问题：Bash 脚本、PowerShell 脚本、Batch 文件和 CMake 各有各的变量定义方式。当目录结构变化时（如重构后的目录迁移），需要同时修改多个文件中的路径——这种重复容易导致漂移和遗漏。 本文档介绍一种单一来源路径文件模式：用一个格式极简的 paths.env 文件（KEY=VALUE，无空格、无引号、无行内注释）作为所有路径的唯一定义点，同时被 Bash（source）、PowerShell（自定义加载器）、Batch（for /f）和 CMake（file(STRINGS) + 正则）四种消费者解析。 🎯 学习目标通过本文档，您将掌握：  paths.env 文件格式的设计约束和原因 四种消费者（Bash&#x2F;PowerShell&#x2F;Batch&#x2F;CMake）的解析实现 CMake 的 CMAKE_CONFIGURE_D...</div></div></div></a><a class="pagination-related" href="/posts/7d0c78d8/" title="CMake SDK 打包模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">CMake SDK 打包模式</div></div><div class="info-2"><div class="info-item-1">📦 CMake SDK 打包模式 文档信息 | 难度: advanced | 预计用时: 40分钟 | 创建: 2026-08-12   📖 概述当一个 C++ 项目需要作为 SDK 被其他项目通过 find_package() 消费时，标准的 install(EXPORT) 只生成 install-tree 的 package config。这意味着消费者必须先 cmake --install 才能使用 SDK——对于 CI 中的 smoke test 或开发时的快速验证，这个安装步骤是不必要的摩擦。 本文档介绍一种 双套 CMake package config 模式：用 authforge_package() 函数同时生成 install-tree 和 build-tree 两套 package config，让消费者可以通过 CMAKE_PREFIX_PATH 指向 build 目录就能 find_package() 消费整个 SDK，无需安装步骤。同时处理 EXPORT_NAME 别名、find_dependency() 传递闭包和版本兼容性文件。 🎯 学习目标通...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/a5cc39c8/" title="跨平台管理脚本一致性模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">跨平台管理脚本一致性模式</div></div><div class="info-2"><div class="info-item-1">🔄 跨平台管理脚本一致性模式 文档信息 | 难度: intermediate | 预计用时: 25分钟 | 创建: 2026-08-12   📖 概述跨平台 C++ 项目通常需要 Bash（Linux&#x2F;macOS）和 PowerShell（Windows）两套脚本。如果两套脚本各自独立维护，命令集合容易漂移——Bash 有某个命令但 PowerShell 没有，或同名命令的参数不同。开发者在平台间切换时遇到不一致的体验。 本文档介绍一种 跨平台管理脚本一致性模式：用 manage.sh 和 manage.ps1 封装项目的所有构建&#x2F;测试&#x2F;运行命令，两者从同一个 paths.env 加载路径，命令集合完全对等。CI 中用一个门禁脚本验证两种脚本的命令列表一致，确保任何命令变更都同步到两种平台。 🎯 学习目标通过本文档，您将掌握：  统一管理脚本的设计结构和命令封装模式 从 paths.env 加载路径的跨平台实现 CI 一致性门禁脚本的设计 命令命名规范和参数对等约定   📚 核心内容1. 基础概念12345678910111213141516...</div></div></div></a><a class="pagination-related" href="/posts/a3949388/" title="异步回调生命周期管理模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">异步回调生命周期管理模式</div></div><div class="info-2"><div class="info-item-1">🔄 异步回调生命周期管理模式 文档信息 | 难度: advanced | 预计用时: 35分钟 | 创建: 2026-08-12   📖 概述在 C++ 异步编程中，回调函数在未来的某个时刻被调用，此时原始调用者可能已经析构。如果在回调中通过裸指针或引用访问已析构的对象，会导致 use-after-free——这是 C++ 异步编程中最危险的 bug 类型之一，通常表现为间歇性崩溃（SIGABRT&#x2F;SIGSEGV），难以复现和调试。 本文档介绍一套完整的 异步回调生命周期管理模式：用 std::make_shared&lt;Callback&gt;(std::move(cb)) 将回调放入共享所有权包装器，在多层嵌套的异步回调链中按值捕获，确保回调对象和关联的服务对象在回调链的整个生命周期中存活。同时区分 Domain 服务层（shared_from_this() 穿透）和 Controller 层（[this] 安全）的捕获约定。 🎯 学习目标通过本文档，您将掌握：  shared_ptr&lt;Callback&gt; 包装器的原理和使用方式 多层异步回调链中...</div></div></div></a><a class="pagination-related" href="/posts/978cdeb3/" title="数据库迁移管理规范"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">数据库迁移管理规范</div></div><div class="info-2"><div class="info-item-1">📋 数据库迁移管理规范 文档信息 | 难度: intermediate | 预计用时: 30分钟 | 创建: 2026-08-12   📖 概述在数据库驱动的项目中，schema 变更通过 SQL 迁移文件管理。没有规范的迁移管理会导致命名混乱（v1.sql、add_users_table.sql、2024-01-15-update.sql 混杂）、已应用的迁移被修改（生产环境与代码不一致）、迁移不可幂等（重复执行出错）等问题。 本文档介绍一套完整的 数据库迁移管理规范：用零填充连续命名（V001__*.sql 到 V022__*.sql）保证执行顺序和可排序性，用 CI 迁移守护工具检查命名规范、幂等性和已应用迁移的校验和不可变性。这套规范不依赖特定的迁移框架（如 Flyway、Liquibase），而是通过工具脚本在 CI 中强制执行。 🎯 学习目标通过本文档，您将掌握：  迁移文件命名规范和排序原理 幂等性检查的实现方式 校验和不可变性防止已应用迁移被篡改 CI 迁移守护工具的设计   📚 核心内容1. 基础概念123456789101112131415161718...</div></div></div></a><a class="pagination-related" href="/posts/72319614/" title="Web API 安全实践集"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">Web API 安全实践集</div></div><div class="info-2"><div class="info-item-1">🔒 Web API 安全实践集 文档信息 | 难度: advanced | 预计用时: 40分钟 | 创建: 2026-08-12   📖 概述Web API 安全不是单一措施，而是纵深防御的多层实践集合。没有银弹——每层防御覆盖不同的攻击向量，缺一层就多一个攻击面。 本文档汇集一套经过验证的 Web API 安全实践集，涵盖认证层（PKCE 强制、渐进式锁定）、密码学层（恒定时间比较、敏感数据哈希存储）、传输层（TLS 统一）、配置层（生产配置保护、环境变量管理密钥）和供应链层（cosign 签名、SBOM 生成）。每条实践都是独立的，但组合使用形成纵深防御。 🎯 学习目标通过本文档，您将掌握：  PKCE（RFC 7636）强制策略和实现 渐进式账户锁定防止暴力破解 恒定时间比较防止时序攻击 敏感数据（密码、Token、Secret）的存储和日志安全 供应链安全（镜像签名、SBOM）   📚 核心内容1. 安全实践概览123456789101112131415161718192021222324graph TD    subgraph &quot;认证安全&quot;...</div></div></div></a><a class="pagination-related" href="/posts/9fd5cea0/" title="Web API 错误系统设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">Web API 错误系统设计</div></div><div class="info-2"><div class="info-item-1">🌐 Web API 错误系统设计 文档信息 | 难度: advanced | 预计用时: 40分钟 | 创建: 2026-08-12   📖 概述在 Web API 中，错误响应的设计直接影响客户端的体验和调试效率。返回裸 HTTP 状态码（如 401、500）让客户端不知道具体发生了什么；返回自由文本错误消息无法程序化处理；错误码散落在代码各处容易漂移和不一致。 本文档介绍一种完整的 Web API 错误系统设计：用 ErrorCatalog 作为错误码的编译期单一来源（包含应用错误码和 OAuth2 协议错误码），用 Error 结构体携带稳定字符串码（如 AUTH_INVALID_CREDENTIALS）、数值码（如 4001）、类别、HTTP 状态码和客户端安全消息，用 ErrorContext 控制生产&#x2F;开发模式下错误详情的暴露程度。还包含错误目录不变量自验证、API 文档与目录一致性测试。 🎯 学习目标通过本文档，您将掌握：  错误目录（ErrorCatalog）的编译期静态表设计和不变量验证 稳定字符串码 + 数值码的双轨编码方案 数值码分段（seg...</div></div></div></a><a class="pagination-related" href="/posts/Infinity/" title="CI Pipeline 三关卡快速失败设计"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">CI Pipeline 三关卡快速失败设计</div></div><div class="info-2"><div class="info-item-1">🚀 CI Pipeline 三关卡快速失败设计 文档信息 | 难度: intermediate | 预计用时: 35分钟 | 创建: 2026-08-12   📖 概述在大型 C++ 项目中，CI pipeline 的构建和测试时间可能很长（数十分钟）。如果所有检查都在一个 job 中串行执行，开发者需要等待很长时间才能发现问题——反馈周期过长。 本文档介绍一种 三关卡快速失败（Three-Gate Fail-Fast）CI pipeline 设计：将 CI 拆分为 FAST、MAIN、RELEASE 三个关卡，每个关卡有不同的验证范围和速度。FAST 关卡只做源码级检查（秒级），失败立即阻断后续；MAIN 关卡做完整构建矩阵（分钟级）；RELEASE 关卡验证 SDK 打包。这种设计确保最便宜的检查最先运行，最贵的检查只在前置关卡通过后执行。 🎯 学习目标通过本文档，您将掌握：  三关卡 pipeline 的分层原理和关卡间依赖关系 FAST 关卡的设计：架构守护、迁移检查、命名验证、API diff MAIN 关卡的构建矩阵设计：三平台 × 多编译器 RELEASE 关...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lucas</div><div class="author-info-description">CodeVerse | 技术宇宙 - 专注于 C++、Qt、系统架构与性能优化的技术知识库。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">236</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">36</div></a></div><a id="card-info-btn" href="/about/"><i class="fa fa-paper-plane"></i><span>关于</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lucaswang420/" target="_blank" title="fab fa-github"><i class="Github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🚀 欢迎来到 CodeVerse！这里专注于深度技术解析与实战经验分享。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%94%A7-Git-Hooks-%E4%BB%A3%E7%A0%81%E8%B4%A8%E9%87%8F%E8%87%AA%E5%8A%A8%E5%8C%96%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">🔧 Git Hooks 代码质量自动化模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%96-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">📖 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%AF-%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.2.</span> <span class="toc-text">🎯 学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9A-%E6%A0%B8%E5%BF%83%E5%86%85%E5%AE%B9"><span class="toc-number">1.3.</span> <span class="toc-text">📚 核心内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 基础概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E7%BC%96%E8%BE%91%E5%90%8E%E8%87%AA%E5%8A%A8%E6%A0%BC%E5%BC%8F%E5%8C%96%EF%BC%88PostToolUse%EF%BC%89"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">2.1 编辑后自动格式化（PostToolUse）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E6%8F%90%E4%BA%A4%E5%89%8D%E5%BC%BA%E5%88%B6%E6%B5%8B%E8%AF%95%E9%97%A8%E7%A6%81%EF%BC%88PreToolUse-on-git-commit%EF%BC%89"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">2.2 提交前强制测试门禁（PreToolUse on git commit）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-%E6%96%87%E4%BB%B6%E4%BF%9D%E6%8A%A4%EF%BC%88PreToolUse-on-Edit-Write%EF%BC%89"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">2.3 文件保护（PreToolUse on Edit&#x2F;Write）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-4-%E5%87%AD%E8%AF%81%E5%AE%88%E5%8D%AB"><span class="toc-number">1.3.2.4.</span> <span class="toc-text">2.4 凭证守卫</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-5-%E5%8D%B1%E9%99%A9%E6%93%8D%E4%BD%9C%E6%8B%A6%E6%88%AA%EF%BC%88Deny-Rules%EF%BC%89"><span class="toc-number">1.3.2.5.</span> <span class="toc-text">2.5 危险操作拦截（Deny Rules）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-Hook-%E7%9A%84%E5%88%86%E5%B1%82%E7%AD%96%E7%95%A5"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.1 Hook 的分层策略</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E9%94%99%E8%AF%AF%E4%BF%A1%E6%81%AF%E8%AE%BE%E8%AE%A1"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.2 错误信息设计</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E4%B8%8E-CI-%E7%9A%84%E4%BA%92%E8%A1%A5%E5%85%B3%E7%B3%BB"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">3.3 与 CI 的互补关系</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 常见问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%97-%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3"><span class="toc-number">1.4.</span> <span class="toc-text">🔗 相关文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9D-%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">📝 总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/e248e336/" title="Conan 2 + CMake Presets 集成模式">Conan 2 + CMake Presets 集成模式</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/f7efedfd/" title="Feature Gating 条件编译模式">Feature Gating 条件编译模式</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ab54f5ad/" title="CMake 函数式共享模块模式">CMake 函数式共享模块模式</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/05168a5f/" title="Windows + WSL2 Ubuntu + VSCode C++ 完整开发环境配置">Windows + WSL2 Ubuntu + VSCode C++ 完整开发环境配置</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/a484ebf8/" title="Playwright E2E 自动化测试接入指南">Playwright E2E 自动化测试接入指南</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By lucas</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lucaswang420/lucaswang420.github.io',
+      'data-repo-id': 'R_kgDOQkzqvg',
+      'data-category-id': 'DIC_kwDOQkzqvs4Cz99h',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !true) {
+    if (true) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script> document.addEventListener('DOMContentLoaded', function() { var announcement = document.createElement('div'); announcement.className = 'top-announcement'; announcement.innerHTML = '🚀 欢迎来到 CodeVerse 技术宇宙！'; document.body.insertBefore(announcement, document.body.firstChild); }); </script><script id="canvas_nest" defer="defer" color="102,204,255" opacity="0.6" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.3"></script></div></div></body></html>

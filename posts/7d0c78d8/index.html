@@ -1,0 +1,392 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>CMake SDK 打包模式 | CodeVerse | 技术宇宙</title><meta name="author" content="lucas"><meta name="copyright" content="lucas"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="用 authforge_package() 生成 install-tree 和 build-tree 双套 CMake package config，实现无需安装即可 find_package 消费">
+<meta property="og:type" content="article">
+<meta property="og:title" content="CMake SDK 打包模式">
+<meta property="og:url" content="https://lucaswang420.github.io/posts/7d0c78d8/index.html">
+<meta property="og:site_name" content="CodeVerse | 技术宇宙">
+<meta property="og:description" content="用 authforge_package() 生成 install-tree 和 build-tree 双套 CMake package config，实现无需安装即可 find_package 消费">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://lucaswang420.github.io/img/butterfly-icon.png">
+<meta property="article:published_time" content="2026-08-13T15:24:58.000Z">
+<meta property="article:modified_time" content="2026-08-13T15:24:59.361Z">
+<meta property="article:author" content="lucas">
+<meta property="article:tag" content="build-system">
+<meta property="article:tag" content="cmake">
+<meta property="article:tag" content="cpp">
+<meta property="article:tag" content="implementation">
+<meta property="article:tag" content="sdk">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://lucaswang420.github.io/img/butterfly-icon.png"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "CMake SDK 打包模式",
+  "url": "https://lucaswang420.github.io/posts/7d0c78d8/",
+  "image": "https://lucaswang420.github.io/img/butterfly-icon.png",
+  "datePublished": "2026-08-13T15:24:58.000Z",
+  "dateModified": "2026-08-13T15:24:59.361Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "lucas",
+      "url": "https://lucaswang420.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/img/favicon.png"><link rel="canonical" href="https://lucaswang420.github.io/posts/7d0c78d8/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/css/index.css?v=5.5.3"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.1.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!true && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', 'undefined')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/',
+  algolia: undefined,
+  localSearch: {"path":"/search.json","preload":false,"top_n_per_article":1,"unescape":false,"pagination":{"enable":false,"hitsPerPage":8},"languages":{"hits_empty":"未找到符合您查询的内容：${query}","hits_stats":"共找到 ${hits} 篇文章"}},
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: true,
+    post: true
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.12.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: true,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'CMake SDK 打包模式',
+  isHighlightShrink: false,
+  isToc: true,
+  pageType: 'post'
+}</script><style> .top-announcement { background: linear-gradient(90deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); color: #333; text-align: center; padding: 10px 0; font-size: 14px; font-weight: bold; width: 100%; border-bottom: 1px solid #eee; } </style><meta name="generator" content="Hexo 8.1.1"><link rel="alternate" href="/atom.xml" title="CodeVerse | 技术宇宙" type="application/atom+xml">
+</head><body><div class="bg-animation" id="web_bg" style="background: [object Object];"></div><div id="sidebar"><div id="menu-mask"></div><div id="sidebar-menus"><div class="avatar-img text-center"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="site-data text-center"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">236</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">36</div></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span></a></div></div></div></div><div class="post" id="body-wrap"><header class="post-bg" id="page-header"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/"><span class="site-name">CodeVerse | 技术宇宙</span></a><a class="nav-page-title" href="/"><span class="site-name">CMake SDK 打包模式</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"><div id="search-button"><span class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></span></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fa fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fa fa-archive"></i><span> 归档</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fa fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fa fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fa fa-user-circle"></i><span> 关于</span></a></div></div><div id="toggle-menu"><span class="site-page"><i class="fas fa-bars fa-fw"></i></span></div></div></nav><div id="post-info"><h1 class="post-title">CMake SDK 打包模式</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-08-13T15:24:59.361Z" title="更新于 2026-08-13 23:24:59">2026-08-13</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E5%BC%80%E5%8F%91%E5%B7%A5%E5%85%B7/">开发工具</a></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><h1 id="📦-CMake-SDK-打包模式"><a href="#📦-CMake-SDK-打包模式" class="headerlink" title="📦 CMake SDK 打包模式"></a>📦 CMake SDK 打包模式</h1><blockquote>
+<p><strong>文档信息</strong> | 难度: <code>advanced</code> | 预计用时: <code>40分钟</code> | 创建: <code>2026-08-12</code></p>
+</blockquote>
+<hr>
+<h2 id="📖-概述"><a href="#📖-概述" class="headerlink" title="📖 概述"></a>📖 概述</h2><p>当一个 C++ 项目需要作为 SDK 被其他项目通过 <code>find_package()</code> 消费时，标准的 <code>install(EXPORT)</code> 只生成 install-tree 的 package config。这意味着消费者必须先 <code>cmake --install</code> 才能使用 SDK——对于 CI 中的 smoke test 或开发时的快速验证，这个安装步骤是不必要的摩擦。</p>
+<p>本文档介绍一种 <strong>双套 CMake package config 模式</strong>：用 <code>authforge_package()</code> 函数同时生成 install-tree 和 build-tree 两套 package config，让消费者可以通过 <code>CMAKE_PREFIX_PATH</code> 指向 build 目录就能 <code>find_package()</code> 消费整个 SDK，无需安装步骤。同时处理 <code>EXPORT_NAME</code> 别名、<code>find_dependency()</code> 传递闭包和版本兼容性文件。</p>
+<h2 id="🎯-学习目标"><a href="#🎯-学习目标" class="headerlink" title="🎯 学习目标"></a>🎯 学习目标</h2><p>通过本文档，您将掌握：</p>
+<ul>
+<li>install-tree 和 build-tree 双套 package config 的生成方式</li>
+<li><code>EXPORT_NAME</code> 解决导出目标命名问题</li>
+<li><code>find_dependency()</code> 闭包确保传递依赖自动解析</li>
+<li><code>configure_package_config_file()</code> 的模板和路径处理</li>
+<li>build-tree export 在 SDK smoke test 中的应用</li>
+</ul>
+<hr>
+<h2 id="📚-核心内容"><a href="#📚-核心内容" class="headerlink" title="📚 核心内容"></a>📚 核心内容</h2><h3 id="1-基础概念"><a href="#1-基础概念" class="headerlink" title="1. 基础概念"></a>1. 基础概念</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br></pre></td><td class="code"><pre><span class="line">graph TD</span><br><span class="line">    subgraph &quot;SDK 生产者&quot;</span><br><span class="line">        LIB[&quot;authforge-common (STATIC)&quot;]</span><br><span class="line">        PKG[&quot;authforge_package()&quot;]</span><br><span class="line">        LIB --&gt; PKG</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph &quot;install-tree&quot;</span><br><span class="line">        IC[&quot;lib/cmake/authforge-common/&lt;br/&gt;authforge-commonConfig.cmake&quot;]</span><br><span class="line">        IT[&quot;authforge-commonTargets.cmake&quot;]</span><br><span class="line">        IV[&quot;authforge-commonConfigVersion.cmake&quot;]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    subgraph &quot;build-tree&quot;</span><br><span class="line">        BC[&quot;build/authforge-cmake/&lt;br/&gt;authforge-common/authforge-commonConfig.cmake&quot;]</span><br><span class="line">        BT[&quot;authforge-commonTargets.cmake&quot;]</span><br><span class="line">        BV[&quot;authforge-commonConfigVersion.cmake&quot;]</span><br><span class="line">    end</span><br><span class="line"></span><br><span class="line">    PKG --&gt; IC</span><br><span class="line">    PKG --&gt; IT</span><br><span class="line">    PKG --&gt; IV</span><br><span class="line">    PKG --&gt; BC</span><br><span class="line">    PKG --&gt; BT</span><br><span class="line">    PKG --&gt; BV</span><br><span class="line"></span><br><span class="line">    subgraph &quot;消费者&quot;</span><br><span class="line">        CON[&quot;find_package(authforge-common CONFIG REQUIRED)&quot;]</span><br><span class="line">        CON --&gt;|&quot;CMAKE_PREFIX_PATH → install&quot;| IC</span><br><span class="line">        CON --&gt;|&quot;CMAKE_PREFIX_PATH → build&quot;| BC</span><br><span class="line">    end</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-实现原理"><a href="#2-实现原理" class="headerlink" title="2. 实现原理"></a>2. 实现原理</h3><h4 id="2-1-问题：标准-install-EXPORT-的三个缺陷"><a href="#2-1-问题：标准-install-EXPORT-的三个缺陷" class="headerlink" title="2.1 问题：标准 install(EXPORT) 的三个缺陷"></a>2.1 问题：标准 install(EXPORT) 的三个缺陷</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># ❌ 标准 install(EXPORT) 的典型问题</span></span><br><span class="line"><span class="keyword">install</span>(TARGETS authforge-common <span class="keyword">EXPORT</span> authforge-commonTargets)</span><br><span class="line"></span><br><span class="line"><span class="keyword">install</span>(<span class="keyword">EXPORT</span> authforge-commonTargets</span><br><span class="line">    <span class="keyword">FILE</span> authforge-commonConfig.cmake  <span class="comment"># 问题 1: 文件名是 Config 但内容是 Targets</span></span><br><span class="line">    NAMESPACE authforge::</span><br><span class="line">    DESTINATION lib/cmake/authforge-common</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<table>
+<thead>
+<tr>
+<th>缺陷</th>
+<th>后果</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>文件名与内容不匹配</td>
+<td><code>Config.cmake</code> 应该有 <code>@PACKAGE_INIT@</code> 和 <code>find_dependency()</code>，但 <code>install(EXPORT)</code> 只生成 target 定义</td>
+</tr>
+<tr>
+<td>无 <code>find_dependency()</code> 闭包</td>
+<td>消费者 <code>find_package</code> 后，传递依赖（如 jsoncpp）不会被自动解析，链接失败</td>
+</tr>
+<tr>
+<td>无 <code>EXPORT_NAME</code> 设置</td>
+<td>导出目标名变成 <code>authforge::authforge-common</code> 而非 <code>authforge::common</code></td>
+</tr>
+<tr>
+<td>只有 install-tree</td>
+<td>消费者必须先安装才能使用</td>
+</tr>
+</tbody></table>
+<h4 id="2-2-解决方案：authforge-package-函数"><a href="#2-2-解决方案：authforge-package-函数" class="headerlink" title="2.2 解决方案：authforge_package() 函数"></a>2.2 解决方案：authforge_package() 函数</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cmake/AuthForgePackage.cmake</span></span><br><span class="line"><span class="keyword">include_guard</span>(GLOBAL)</span><br><span class="line"><span class="keyword">include</span>(GNUInstallDirs)</span><br><span class="line"><span class="keyword">include</span>(CMakePackageConfigHelpers)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 捕获本模块目录（在 include 时而非函数体内）</span></span><br><span class="line"><span class="keyword">set</span>(AUTHFORGE_PACKAGE_MODULE_DIR <span class="string">&quot;$&#123;CMAKE_CURRENT_LIST_DIR&#125;&quot;</span></span><br><span class="line">    CACHE INTERNAL <span class="string">&quot;Directory containing AuthForgePackage.cmake&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># build-tree 的统一根目录</span></span><br><span class="line"><span class="keyword">if</span>(<span class="keyword">NOT</span> <span class="keyword">DEFINED</span> AUTHFORGE_BUILD_CMAKE_DIR)</span><br><span class="line">    <span class="keyword">set</span>(AUTHFORGE_BUILD_CMAKE_DIR <span class="string">&quot;$&#123;CMAKE_BINARY_DIR&#125;/authforge-cmake&quot;</span></span><br><span class="line">        CACHE INTERNAL <span class="string">&quot;Root dir for build-tree package configs&quot;</span>)</span><br><span class="line"><span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line"><span class="comment"># authforge_package(</span></span><br><span class="line"><span class="comment">#     TARGET       authforge-common</span></span><br><span class="line"><span class="comment">#     PACKAGE      authforge-common        # 可选，默认=TARGET</span></span><br><span class="line"><span class="comment">#     EXPORT_NAME  common                  # authforge::common 的后缀</span></span><br><span class="line"><span class="comment">#     DEPENDENCIES jsoncpp drogon          # find_dependency() 闭包</span></span><br><span class="line"><span class="comment"># )</span></span><br><span class="line"><span class="keyword">function</span>(authforge_package)</span><br><span class="line">    <span class="keyword">set</span>(options)</span><br><span class="line">    <span class="keyword">set</span>(oneValueArgs <span class="keyword">TARGET</span> PACKAGE EXPORT_NAME)</span><br><span class="line">    <span class="keyword">set</span>(multiValueArgs DEPENDENCIES)</span><br><span class="line">    <span class="keyword">cmake_parse_arguments</span>(AP <span class="string">&quot;$&#123;options&#125;&quot;</span> <span class="string">&quot;$&#123;oneValueArgs&#125;&quot;</span> <span class="string">&quot;$&#123;multiValueArgs&#125;&quot;</span> <span class="variable">$&#123;ARGN&#125;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">NOT</span> AP_TARGET)</span><br><span class="line">        <span class="keyword">message</span>(FATAL_ERROR <span class="string">&quot;authforge_package: TARGET is required&quot;</span>)</span><br><span class="line">    <span class="keyword">endif</span>()</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">NOT</span> AP_PACKAGE)</span><br><span class="line">        <span class="keyword">set</span>(AP_PACKAGE <span class="string">&quot;$&#123;AP_TARGET&#125;&quot;</span>)</span><br><span class="line">    <span class="keyword">endif</span>()</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">NOT</span> AP_EXPORT_NAME)</span><br><span class="line">        <span class="keyword">message</span>(FATAL_ERROR <span class="string">&quot;authforge_package: EXPORT_NAME is required&quot;</span>)</span><br><span class="line">    <span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line">    <span class="keyword">set</span>(_export_set <span class="string">&quot;$&#123;AP_PACKAGE&#125;Targets&quot;</span>)</span><br><span class="line">    <span class="keyword">set</span>(_version <span class="string">&quot;$&#123;OAUTH2_PROJECT_VERSION&#125;&quot;</span>)</span><br><span class="line">    <span class="keyword">if</span>(<span class="keyword">NOT</span> _version)</span><br><span class="line">        <span class="keyword">set</span>(_version <span class="string">&quot;1.0.0&quot;</span>)</span><br><span class="line">    <span class="keyword">endif</span>()</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关键 1: 设置 EXPORT_NAME，消费者得到 authforge::common</span></span><br><span class="line">    <span class="comment"># 而非 authforge::authforge-common</span></span><br><span class="line">    <span class="keyword">set_target_properties</span>(<span class="variable">$&#123;AP_TARGET&#125;</span> PROPERTIES</span><br><span class="line">        EXPORT_NAME <span class="string">&quot;$&#123;AP_EXPORT_NAME&#125;&quot;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- install-tree 目标安装 ---</span></span><br><span class="line">    <span class="keyword">install</span>(TARGETS <span class="variable">$&#123;AP_TARGET&#125;</span></span><br><span class="line">        <span class="keyword">EXPORT</span> <span class="variable">$&#123;_export_set&#125;</span></span><br><span class="line">        LIBRARY DESTINATION <span class="variable">$&#123;CMAKE_INSTALL_LIBDIR&#125;</span></span><br><span class="line">        ARCHIVE DESTINATION <span class="variable">$&#123;CMAKE_INSTALL_LIBDIR&#125;</span></span><br><span class="line">        RUNTIME DESTINATION <span class="variable">$&#123;CMAKE_INSTALL_BINDIR&#125;</span></span><br><span class="line">        INCLUDES DESTINATION <span class="variable">$&#123;CMAKE_INSTALL_INCLUDEDIR&#125;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关键 2: 生成 find_dependency() 闭包块</span></span><br><span class="line">    <span class="keyword">set</span>(AUTHFORGE_FIND_DEPENDENCY_BLOCK <span class="string">&quot;&quot;</span>)</span><br><span class="line">    <span class="keyword">foreach</span>(_dep IN LISTS AP_DEPENDENCIES)</span><br><span class="line">        <span class="keyword">string</span>(APPEND AUTHFORGE_FIND_DEPENDENCY_BLOCK <span class="string">&quot;find_dependency($&#123;_dep&#125;)\n&quot;</span>)</span><br><span class="line">    <span class="keyword">endforeach</span>()</span><br><span class="line">    <span class="keyword">set</span>(AUTHFORGE_PKG_NAME <span class="string">&quot;$&#123;AP_PACKAGE&#125;&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># Config 模板</span></span><br><span class="line">    <span class="keyword">set</span>(_template <span class="string">&quot;$&#123;AUTHFORGE_PACKAGE_MODULE_DIR&#125;/AuthForgePackageConfig.cmake.in&quot;</span>)</span><br><span class="line"></span><br><span class="line">    <span class="comment"># --- install tree: Config + ConfigVersion + EXPORT ---</span></span><br><span class="line">    <span class="keyword">set</span>(_install_cmakedir <span class="string">&quot;$&#123;CMAKE_INSTALL_LIBDIR&#125;/cmake/$&#123;AP_PACKAGE&#125;&quot;</span>)</span><br><span class="line">    <span class="keyword">set</span>(_install_stage <span class="string">&quot;$&#123;CMAKE_CURRENT_BINARY_DIR&#125;/authforge-package/install&quot;</span>)</span><br><span class="line"></span><br><span class="line">    configure_package_config_file(</span><br><span class="line">        <span class="string">&quot;$&#123;_template&#125;&quot;</span></span><br><span class="line">        <span class="string">&quot;$&#123;_install_stage&#125;/$&#123;AP_PACKAGE&#125;Config.cmake&quot;</span></span><br><span class="line">        INSTALL_DESTINATION <span class="string">&quot;$&#123;_install_cmakedir&#125;&quot;</span></span><br><span class="line">    )</span><br><span class="line">    write_basic_package_version_file(</span><br><span class="line">        <span class="string">&quot;$&#123;_install_stage&#125;/$&#123;AP_PACKAGE&#125;ConfigVersion.cmake&quot;</span></span><br><span class="line">        VERSION <span class="string">&quot;$&#123;_version&#125;&quot;</span></span><br><span class="line">        COMPATIBILITY SameMajorVersion</span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">install</span>(<span class="keyword">EXPORT</span> <span class="variable">$&#123;_export_set&#125;</span></span><br><span class="line">        <span class="keyword">FILE</span> <span class="variable">$&#123;AP_PACKAGE&#125;</span>Targets.cmake</span><br><span class="line">        NAMESPACE authforge::</span><br><span class="line">        DESTINATION <span class="string">&quot;$&#123;_install_cmakedir&#125;&quot;</span></span><br><span class="line">    )</span><br><span class="line">    <span class="keyword">install</span>(FILES</span><br><span class="line">        <span class="string">&quot;$&#123;_install_stage&#125;/$&#123;AP_PACKAGE&#125;Config.cmake&quot;</span></span><br><span class="line">        <span class="string">&quot;$&#123;_install_stage&#125;/$&#123;AP_PACKAGE&#125;ConfigVersion.cmake&quot;</span></span><br><span class="line">        DESTINATION <span class="string">&quot;$&#123;_install_cmakedir&#125;&quot;</span></span><br><span class="line">    )</span><br><span class="line"></span><br><span class="line">    <span class="comment"># 关键 3: build-tree export（无需安装即可消费）</span></span><br><span class="line">    <span class="keyword">set</span>(_build_cmakedir <span class="string">&quot;$&#123;AUTHFORGE_BUILD_CMAKE_DIR&#125;/$&#123;AP_PACKAGE&#125;&quot;</span>)</span><br><span class="line">    <span class="keyword">export</span>(<span class="keyword">EXPORT</span> <span class="variable">$&#123;_export_set&#125;</span></span><br><span class="line">        <span class="keyword">FILE</span> <span class="string">&quot;$&#123;_build_cmakedir&#125;/$&#123;AP_PACKAGE&#125;Targets.cmake&quot;</span></span><br><span class="line">        NAMESPACE authforge::</span><br><span class="line">    )</span><br><span class="line">    configure_package_config_file(</span><br><span class="line">        <span class="string">&quot;$&#123;_template&#125;&quot;</span></span><br><span class="line">        <span class="string">&quot;$&#123;_build_cmakedir&#125;/$&#123;AP_PACKAGE&#125;Config.cmake&quot;</span></span><br><span class="line">        INSTALL_DESTINATION <span class="string">&quot;$&#123;_build_cmakedir&#125;&quot;</span></span><br><span class="line">        INSTALL_PREFIX <span class="string">&quot;$&#123;_build_cmakedir&#125;&quot;</span></span><br><span class="line">    )</span><br><span class="line">    write_basic_package_version_file(</span><br><span class="line">        <span class="string">&quot;$&#123;_build_cmakedir&#125;/$&#123;AP_PACKAGE&#125;ConfigVersion.cmake&quot;</span></span><br><span class="line">        VERSION <span class="string">&quot;$&#123;_version&#125;&quot;</span></span><br><span class="line">        COMPATIBILITY SameMajorVersion</span><br><span class="line">    )</span><br><span class="line"><span class="keyword">endfunction</span>()</span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-Config-模板文件"><a href="#2-3-Config-模板文件" class="headerlink" title="2.3 Config 模板文件"></a>2.3 Config 模板文件</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># cmake/AuthForgePackageConfig.cmake.in</span></span><br><span class="line">@PACKAGE_INIT@</span><br><span class="line"></span><br><span class="line"><span class="comment"># 传递依赖闭包——消费者 find_package 时自动解析</span></span><br><span class="line">@AUTHFORGE_FIND_DEPENDENCY_BLOCK@</span><br><span class="line"></span><br><span class="line"><span class="comment"># 导入 targets</span></span><br><span class="line"><span class="keyword">include</span>(<span class="string">&quot;$&#123;CMAKE_CURRENT_LIST_DIR&#125;/@AUTHFORGE_PKG_NAME@Targets.cmake&quot;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 可选: 版本检查消息</span></span><br><span class="line"><span class="keyword">message</span>(STATUS <span class="string">&quot;Found @AUTHFORGE_PKG_NAME@ (version $&#123;PACKAGE_VERSION&#125;)&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<p><strong>模板的关键点</strong>：</p>
+<ul>
+<li><code>@PACKAGE_INIT@</code> 展开为路径修正代码，让 <code>PACKAGE_PREFIX_DIR</code> 指向正确的安装&#x2F;build 目录</li>
+<li><code>@AUTHFORGE_FIND_DEPENDENCY_BLOCK@</code> 展开为一系列 <code>find_dependency(xxx)</code> 调用，确保传递依赖被解析</li>
+<li><code>include(...Targets.cmake)</code> 导入实际的 target 定义</li>
+</ul>
+<h3 id="3-代码示例"><a href="#3-代码示例" class="headerlink" title="3. 代码示例"></a>3. 代码示例</h3><h4 id="3-1-每个包的使用"><a href="#3-1-每个包的使用" class="headerlink" title="3.1 每个包的使用"></a>3.1 每个包的使用</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># libs/common/CMakeLists.txt</span></span><br><span class="line"><span class="keyword">add_library</span>(authforge-common STATIC</span><br><span class="line">    <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="comment"># 设置 ALIAS——in-tree 消费者用 authforge::common</span></span><br><span class="line"><span class="keyword">add_library</span>(authforge::common ALIAS authforge-common)</span><br><span class="line"></span><br><span class="line"><span class="comment"># SDK 打包</span></span><br><span class="line">authforge_package(</span><br><span class="line">    <span class="keyword">TARGET</span>       authforge-common</span><br><span class="line">    PACKAGE      authforge-common</span><br><span class="line">    EXPORT_NAME  common              <span class="comment"># → authforge::common</span></span><br><span class="line">    DEPENDENCIES jsoncpp              <span class="comment"># 传递依赖</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># libs/drogon/CMakeLists.txt</span></span><br><span class="line"><span class="keyword">add_library</span>(authforge-drogon STATIC</span><br><span class="line">    <span class="variable">$&#123;SOURCES&#125;</span></span><br><span class="line">)</span><br><span class="line"><span class="keyword">target_link_libraries</span>(authforge-drogon</span><br><span class="line">    PUBLIC authforge::common authforge::oauth2</span><br><span class="line">    PRIVATE drogon::drogon</span><br><span class="line">)</span><br><span class="line"></span><br><span class="line">authforge_package(</span><br><span class="line">    <span class="keyword">TARGET</span>       authforge-drogon</span><br><span class="line">    PACKAGE      authforge-drogon</span><br><span class="line">    EXPORT_NAME  drogon               <span class="comment"># → authforge::drogon</span></span><br><span class="line">    DEPENDENCIES</span><br><span class="line">        authforge-common</span><br><span class="line">        authforge-oauth2</span><br><span class="line">        drogon</span><br><span class="line">        jsoncpp</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-2-消费者使用（install-tree）"><a href="#3-2-消费者使用（install-tree）" class="headerlink" title="3.2 消费者使用（install-tree）"></a>3.2 消费者使用（install-tree）</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 消费者的 CMakeLists.txt</span></span><br><span class="line"><span class="keyword">find_package</span>(authforge-drogon CONFIG REQUIRED)</span><br><span class="line"><span class="comment"># → 自动 find_dependency(authforge-common), find_dependency(authforge-oauth2),</span></span><br><span class="line"><span class="comment">#   find_dependency(drogon), find_dependency(jsoncpp)</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(my-app PRIVATE authforge::drogon)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-3-消费者使用（build-tree，无需安装）"><a href="#3-3-消费者使用（build-tree，无需安装）" class="headerlink" title="3.3 消费者使用（build-tree，无需安装）"></a>3.3 消费者使用（build-tree，无需安装）</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># examples/full-stack-host/CMakeLists.txt</span></span><br><span class="line"><span class="comment"># 不需要安装 SDK，直接指向 build 目录</span></span><br><span class="line"><span class="keyword">set</span>(CMAKE_PREFIX_PATH</span><br><span class="line">    <span class="string">&quot;$&#123;AUTHFORGE_BUILD_CMAKE_DIR&#125;&quot;</span>  <span class="comment"># build/authforge-cmake/</span></span><br><span class="line">    CACHE PATH <span class="string">&quot;Path to authforge build-tree cmake configs&quot;</span></span><br><span class="line">)</span><br><span class="line"></span><br><span class="line"><span class="keyword">find_package</span>(authforge-drogon CONFIG REQUIRED)</span><br><span class="line"><span class="comment"># → 从 build-tree 的 authforge-drogon/authforge-drogonConfig.cmake 解析</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">target_link_libraries</span>(my-app PRIVATE authforge::drogon)</span><br></pre></td></tr></table></figure>
+
+<h4 id="3-4-CI-中的-SDK-smoke-test"><a href="#3-4-CI-中的-SDK-smoke-test" class="headerlink" title="3.4 CI 中的 SDK smoke test"></a>3.4 CI 中的 SDK smoke test</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># examples/full-stack-host 的 CTest 配置</span></span><br><span class="line"><span class="comment"># 用 ctest --build-and-test 验证真实外部消费者路径</span></span><br><span class="line"><span class="keyword">add_test</span>(</span><br><span class="line">    NAME SdkSmoke_FullStackHost</span><br><span class="line">    <span class="keyword">COMMAND</span> <span class="variable">$&#123;CMAKE_CTEST_COMMAND&#125;</span></span><br><span class="line">        --build-<span class="keyword">and</span>-<span class="keyword">test</span></span><br><span class="line">        <span class="variable">$&#123;CMAKE_SOURCE_DIR&#125;</span>/examples/full-stack-host</span><br><span class="line">        <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/examples/full-stack-host-build</span><br><span class="line">        --build-generator <span class="variable">$&#123;CMAKE_GENERATOR&#125;</span></span><br><span class="line">        --build-options</span><br><span class="line">            -DCMAKE_PREFIX_PATH=<span class="variable">$&#123;AUTHFORGE_BUILD_CMAKE_DIR&#125;</span></span><br><span class="line">        --<span class="keyword">test</span>-<span class="keyword">command</span> <span class="variable">$&#123;CMAKE_BINARY_DIR&#125;</span>/examples/full-stack-host-build/full-stack-host</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<h3 id="4-最佳实践"><a href="#4-最佳实践" class="headerlink" title="4. 最佳实践"></a>4. 最佳实践</h3><h4 id="4-1-EXPORT-NAME-与-ALIAS-的一致性"><a href="#4-1-EXPORT-NAME-与-ALIAS-的一致性" class="headerlink" title="4.1 EXPORT_NAME 与 ALIAS 的一致性"></a>4.1 EXPORT_NAME 与 ALIAS 的一致性</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># in-tree ALIAS</span></span><br><span class="line"><span class="keyword">add_library</span>(authforge::common ALIAS authforge-common)</span><br><span class="line"></span><br><span class="line"><span class="comment"># SDK export</span></span><br><span class="line">authforge_package(</span><br><span class="line">    <span class="keyword">TARGET</span>      authforge-common</span><br><span class="line">    EXPORT_NAME common  <span class="comment"># → authforge::common</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>in-tree 代码用 <code>authforge::common</code>（ALIAS），外部消费者也用 <code>authforge::common</code>（EXPORT_NAME）。两者一致——同一代码可以用 ALIAS 在 in-tree 消费，也可以用 <code>find_package</code> 在 out-of-tree 消费，无需改代码。</p>
+<h4 id="4-2-传递依赖闭包的完整性"><a href="#4-2-传递依赖闭包的完整性" class="headerlink" title="4.2 传递依赖闭包的完整性"></a>4.2 传递依赖闭包的完整性</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">authforge_package(</span><br><span class="line">    <span class="keyword">TARGET</span>       authforge-drogon</span><br><span class="line">    DEPENDENCIES</span><br><span class="line">        authforge-common    <span class="comment"># 第一方依赖</span></span><br><span class="line">        authforge-oauth2     <span class="comment"># 第一方依赖</span></span><br><span class="line">        drogon               <span class="comment"># 第三方依赖</span></span><br><span class="line">        jsoncpp              <span class="comment"># 第三方依赖</span></span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>DEPENDENCIES 列表必须完整——遗漏任何一个传递依赖，消费者 <code>find_package</code> 后链接时会报 <code>undefined reference</code>。这里的”完整”指 PUBLIC 和 INTERFACE 链接的依赖（PRIVATE 链接的依赖不需要，因为它们已经静态链接到 STATIC 库中）。</p>
+<h4 id="4-3-SameMajorVersion-兼容性"><a href="#4-3-SameMajorVersion-兼容性" class="headerlink" title="4.3 SameMajorVersion 兼容性"></a>4.3 SameMajorVersion 兼容性</h4><figure class="highlight cmake"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">write_basic_package_version_file(</span><br><span class="line">    <span class="string">&quot;$&#123;_build_cmakedir&#125;/$&#123;AP_PACKAGE&#125;ConfigVersion.cmake&quot;</span></span><br><span class="line">    VERSION <span class="string">&quot;$&#123;_version&#125;&quot;</span></span><br><span class="line">    COMPATIBILITY SameMajorVersion</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p><code>SameMajorVersion</code> 表示 1.x.x 版本的 SDK 与 1.0.0 的 ConfigVersion 兼容。消费者请求 <code>find_package(authforge-common 1.0)</code> 会匹配任何 1.x.x 版本。这符合 SemVer 的向后兼容承诺。</p>
+<h3 id="5-常见问题"><a href="#5-常见问题" class="headerlink" title="5. 常见问题"></a>5. 常见问题</h3><p><strong>Q: build-tree export 和 install-tree export 的 Config 文件有什么区别？</strong></p>
+<p>A: 路径不同。install-tree 的 <code>PACKAGE_PREFIX_DIR</code> 指向安装目录（如 <code>/usr/local</code>），build-tree 的指向 build 目录（如 <code>build/authforge-cmake/authforge-common</code>）。<code>configure_package_config_file()</code> 用 <code>INSTALL_PREFIX</code> 参数区分这两种场景。</p>
+<p><strong>Q: 为什么用 <code>include_guard(GLOBAL)</code> 而不是普通的 include guard？</strong></p>
+<p>A: <code>include_guard(GLOBAL)</code> 确保这个模块在整个 CMake 配置过程中只 include 一次。多个包都调用 <code>authforge_package()</code>，如果每次都重新 include 会重复定义 <code>AUTHFORGE_BUILD_CMAKE_DIR</code> 等变量。<code>CACHE INTERNAL</code> 也辅助实现这一点。</p>
+<p><strong>Q: 消费者如何知道需要哪些传递依赖？</strong></p>
+<p>A: 不需要知道——这就是 <code>find_dependency()</code> 闭包的价值。Config 模板中的 <code>find_dependency()</code> 调用会自动解析所有传递依赖。消费者只需 <code>find_package(authforge-drogon)</code>，Config 文件会递归地 <code>find_dependency</code> 所有需要的包。</p>
+<hr>
+<h2 id="🔗-相关文档"><a href="#🔗-相关文档" class="headerlink" title="🔗 相关文档"></a>🔗 相关文档</h2><ul>
+<li>[[cmake-shared-modules-guide]] — CMake 函数式共享模块模式</li>
+<li>[[conan-cmake-presets-guide]] — Conan 2 + CMake Presets 集成</li>
+<li>[[ci-pipeline-three-gate-design-guide]] — CI RELEASE gate 中的 SDK smoke test</li>
+</ul>
+<hr>
+<h2 id="📝-总结"><a href="#📝-总结" class="headerlink" title="📝 总结"></a>📝 总结</h2><p><strong>关键要点</strong>:</p>
+<ol>
+<li><strong>双套 package config</strong>：install-tree（安装后消费）+ build-tree（无需安装直接消费）</li>
+<li><strong>EXPORT_NAME</strong>：设置 <code>authforge::common</code> 而非 <code>authforge::authforge-common</code></li>
+<li><strong>find_dependency() 闭包</strong>：Config 模板自动解析传递依赖</li>
+<li><strong>SameMajorVersion</strong>：符合 SemVer 的版本兼容性策略</li>
+<li><strong>build-tree → CI smoke test</strong>：<code>ctest --build-and-test</code> 验证真实消费者路径</li>
+</ol>
+<blockquote>
+<p><strong>💡 提示</strong>: build-tree export 的最大价值是让 CI 能在 SDK 构建后立即验证”外部消费者能否正确 find_package”——不需要安装步骤，直接指向 build 目录即可。这把 SDK 集成测试从”需要特殊环境”变成了”CI 标准步骤”。</p>
+</blockquote>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="https://lucaswang420.github.io">lucas</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="https://lucaswang420.github.io/posts/7d0c78d8/">https://lucaswang420.github.io/posts/7d0c78d8/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="https://lucaswang420.github.io" target="_blank">CodeVerse | 技术宇宙</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/cmake/">cmake</a><a class="post-meta__tags" href="/tags/build-system/">build-system</a><a class="post-meta__tags" href="/tags/implementation/">implementation</a><a class="post-meta__tags" href="/tags/cpp/">cpp</a><a class="post-meta__tags" href="/tags/sdk/">sdk</a></div><div class="post-share"><div class="social-share" data-image="/img/butterfly-icon.png" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related" href="/posts/5abd78c8/" title="Git Hooks 代码质量自动化模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info"><div class="info-1"><div class="info-item-1">上一篇</div><div class="info-item-2">Git Hooks 代码质量自动化模式</div></div><div class="info-2"><div class="info-item-1">🔧 Git Hooks 代码质量自动化模式 文档信息 | 难度: intermediate | 预计用时: 30分钟 | 创建: 2026-08-12   📖 概述在 AI 辅助开发的工作流中，代码质量保障不能仅靠人工审查和 CI。一种有效的补充策略是使用 工具级 Hooks（如 Claude Code 的 PreToolUse&#x2F;PostToolUse hooks）在编码实时进行质量守护：自动格式化、提交前强制测试、保护生成代码不被手改、阻止凭证泄漏。 本文档梳理一套 Git Hooks 代码质量自动化模式，涵盖编辑后自动格式化、提交前测试门禁、文件保护（ORM 模型、生产配置）、凭证守卫（占位符检测），以及禁止危险操作（直接 push）。 🎯 学习目标通过本文档，您将掌握：  PostToolUse hook 实现编辑后自动格式化 PreToolUse hook 实现提交前强制测试门禁 文件保护策略：阻止对生成代码和敏感配置的修改 凭证守卫：检测占位符凭证防止泄漏 危险操作拦截：禁止 git push 直推   📚 核心内容1. 基础概念12345678910...</div></div></div></a><a class="pagination-related" href="/posts/a484ebf8/" title="Playwright E2E 自动化测试接入指南"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">Playwright E2E 自动化测试接入指南</div></div><div class="info-2"><div class="info-item-1">Playwright E2E 自动化测试接入指南 基于 OAuth2 Admin 项目实践总结，面向其他前端项目的 Playwright E2E 测试接入参考。   目录 核心原理 项目初始化 Mock API 层设计 测试文件组织 测试编写模式 进阶技巧 CI&#x2F;CD 集成 常见问题   1. 核心原理1.1 为什么选择请求拦截而不是真实后端   方案 优点 缺点    请求拦截 Mock 无需后端依赖、执行快(&lt;5s)、稳定不 flaky、可自由控制响应 不验证前后端集成   真实后端 验证端到端集成 需要数据库&#x2F;缓存&#x2F;服务、慢(分钟级)、环境依赖多、数据隔离难   MSW (Mock Service Worker) 浏览器层拦截、更贴近真实 配置复杂、需要 Service Worker 支持   本项目选择 Playwright 原生 page.route() 请求拦截，理由：  零额外依赖（Playwright 内置） API 简洁直观 拦截发生在网络层之前，性能最好 支持精确匹配 URL 模式和 HTTP 方法 支持在单个测试中覆盖全局...</div></div></div></a></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span>相关推荐</span></div><div class="relatedPosts-list"><a class="pagination-related" href="/posts/f7efedfd/" title="Feature Gating 条件编译模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">Feature Gating 条件编译模式</div></div><div class="info-2"><div class="info-item-1">🔀 Feature Gating 条件编译模式 文档信息 | 难度: intermediate | 预计用时: 25分钟 | 创建: 2026-08-12   📖 概述在 SDK 项目中，不是所有消费者都需要全部功能。一个认证 SDK 可能包含 OAuth2 核心、身份管理、社交登录、WebAuthn 等模块。某些消费者只需要 OAuth2 核心，不需要拉入社交登录的依赖。如果不提供条件编译，消费者被迫接受全部依赖面——增大构建时间、增加攻击面、引入不需要的传递依赖。 本文档介绍一种 Feature Gating 条件编译模式：用 CMake option() 定义功能开关，用 Conan 的 with_* options 作为消费者入口，通过 conanfile.py 的 generate() 方法将 Conan 选项透传到 CMake 缓存变量，用条件 add_subdirectory() 控制哪些模块参与编译。 🎯 学习目标通过本文档，您将掌握：  CMake option 和 Conan option 的联动机制 conanfile.py 的 generate() ...</div></div></div></a><a class="pagination-related" href="/posts/ab54f5ad/" title="CMake 函数式共享模块模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">CMake 函数式共享模块模式</div></div><div class="info-2"><div class="info-item-1">🔧 CMake 函数式共享模块模式 文档信息 | 难度: advanced | 预计用时: 45分钟 | 创建: 2026-08-12   📖 概述在多包 C++ 项目中，编译选项（警告级别、sanitizer、coverage 等）的管理是一个容易被忽视但影响深远的工程问题。常见的做法有两种：一是每个 CMakeLists.txt 各自手写 target_compile_options，导致选项碎片化；二是用 INTERFACE 库统一管理，但会将 PRIVATE 标志泄漏到 SDK 消费者的构建表面。 本文档介绍一种函数式 CMake 共享模块模式：将编译选项封装为 function(target) 形式的 CMake 模块，每个 target 按需调用。这种模式的核心优势是——所有标志都是 PRIVATE 的，对 SDK 消费者零足迹，同时实现了全项目统一的编译选项治理。 🎯 学习目标通过本文档，您将掌握：  函数式 CMake 模块的设计原理和与 INTERFACE 库的对比 跨编译器警告级别的统一管理（MSVC /W4 + GCC&#x2F;Clang -Wall...</div></div></div></a><a class="pagination-related" href="/posts/1162ddd4/" title="paths.env 跨平台路径单一来源模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">paths.env 跨平台路径单一来源模式</div></div><div class="info-2"><div class="info-item-1">🌐 paths.env 跨平台路径单一来源模式 文档信息 | 难度: intermediate | 预计用时: 30分钟 | 创建: 2026-08-12   📖 概述在跨平台 C++ 项目中，路径管理是一个持续性问题：Bash 脚本、PowerShell 脚本、Batch 文件和 CMake 各有各的变量定义方式。当目录结构变化时（如重构后的目录迁移），需要同时修改多个文件中的路径——这种重复容易导致漂移和遗漏。 本文档介绍一种单一来源路径文件模式：用一个格式极简的 paths.env 文件（KEY=VALUE，无空格、无引号、无行内注释）作为所有路径的唯一定义点，同时被 Bash（source）、PowerShell（自定义加载器）、Batch（for /f）和 CMake（file(STRINGS) + 正则）四种消费者解析。 🎯 学习目标通过本文档，您将掌握：  paths.env 文件格式的设计约束和原因 四种消费者（Bash&#x2F;PowerShell&#x2F;Batch&#x2F;CMake）的解析实现 CMake 的 CMAKE_CONFIGURE_D...</div></div></div></a><a class="pagination-related" href="/posts/e248e336/" title="Conan 2 + CMake Presets 集成模式"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">Conan 2 + CMake Presets 集成模式</div></div><div class="info-2"><div class="info-item-1">📦 Conan 2 + CMake Presets 集成模式 文档信息 | 难度: intermediate | 预计用时: 40分钟 | 创建: 2026-08-12   📖 概述现代 C++ 项目面临三平台（Linux&#x2F;Windows&#x2F;macOS）、多编译器（GCC&#x2F;MSVC&#x2F;Clang）、多构建类型（Release&#x2F;Debug&#x2F;Sanitizer）的构建矩阵管理问题。手工指定 toolchain 文件、构建类型和编译器标志既容易出错又难以在 CI 中复现。 本文档介绍一种 Conan 2 + CMake Presets 集成模式：用 conanfile.py 作为三平台依赖的唯一描述符，用 CMakePresets.json 定义平台特定的构建预设，两者通过 Conan 生成的 conan_toolchain.cmake 桥接。CI 和本地开发者使用相同的 cmake --preset &lt;name&gt; 命令，确保构建路径一致。 🎯 学习目标通过本文档，您将掌握：  conanfile.py 的选项管...</div></div></div></a><a class="pagination-related" href="/posts/4f27a319/" title="Repository + Strategy 模式 (C++)"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">Repository + Strategy 模式 (C++)</div></div><div class="info-2"><div class="info-item-1">🏗️ Repository + Strategy 模式 (C++) 文档信息 | 难度: advanced | 预计用时: 40分钟 | 创建: 2026-08-12   📖 概述在需要支持多种存储后端（PostgreSQL、Redis、内存）的项目中，Repository 模式是隔离 Domain 层与存储实现的经典手段。但当不同后端的能力差异较大（如 PostgreSQL 支持事务但 Redis 不支持），简单的单一接口会导致两种问题：要么接口降级到最低能力（PostgreSQL 的事务能力被浪费），要么接口充斥可选方法（调用者不知道哪些方法在自己的后端上可用）。 本文档介绍一种 Repository 接口 + Strategy Bundle + 能力标志 的组合模式：用纯虚接口定义存储契约，用 Bundle 模式将一组 Repository 打包为可切换的存储策略，用能力标志（supportsTransactions()、supportsCas()）让测试套件和运行时代码知道当前后端的能力边界。 🎯 学习目标通过本文档，您将掌握：  Repository 接口的异步回...</div></div></div></a><a class="pagination-related" href="/posts/72319614/" title="Web API 安全实践集"><div class="cover" style="background: var(--default-bg-color)"></div><div class="info text-center"><div class="info-1"><div class="info-item-1"><i class="far fa-calendar-alt fa-fw"></i> 2026-08-13</div><div class="info-item-2">Web API 安全实践集</div></div><div class="info-2"><div class="info-item-1">🔒 Web API 安全实践集 文档信息 | 难度: advanced | 预计用时: 40分钟 | 创建: 2026-08-12   📖 概述Web API 安全不是单一措施，而是纵深防御的多层实践集合。没有银弹——每层防御覆盖不同的攻击向量，缺一层就多一个攻击面。 本文档汇集一套经过验证的 Web API 安全实践集，涵盖认证层（PKCE 强制、渐进式锁定）、密码学层（恒定时间比较、敏感数据哈希存储）、传输层（TLS 统一）、配置层（生产配置保护、环境变量管理密钥）和供应链层（cosign 签名、SBOM 生成）。每条实践都是独立的，但组合使用形成纵深防御。 🎯 学习目标通过本文档，您将掌握：  PKCE（RFC 7636）强制策略和实现 渐进式账户锁定防止暴力破解 恒定时间比较防止时序攻击 敏感数据（密码、Token、Secret）的存储和日志安全 供应链安全（镜像签名、SBOM）   📚 核心内容1. 安全实践概览123456789101112131415161718192021222324graph TD    subgraph &quot;认证安全&quot;...</div></div></div></a></div></div><hr class="custom-hr"/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div id="giscus-wrap"></div></div></div></div></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7" data-lazy-src="/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">lucas</div><div class="author-info-description">CodeVerse | 技术宇宙 - 专注于 C++、Qt、系统架构与性能优化的技术知识库。</div><div class="site-data"><a href="/archives/"><div class="headline">文章</div><div class="length-num">95</div></a><a href="/tags/"><div class="headline">标签</div><div class="length-num">236</div></a><a href="/categories/"><div class="headline">分类</div><div class="length-num">36</div></a></div><a id="card-info-btn" href="/about/"><i class="fa fa-paper-plane"></i><span>关于</span></a><div class="card-info-social-icons"><a class="social-icon" href="https://github.com/lucaswang420/" target="_blank" title="fab fa-github"><i class="Github"></i></a></div></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">🚀 欢迎来到 CodeVerse！这里专注于深度技术解析与实战经验分享。</div></div><div class="sticky_layout"><div class="card-widget" id="card-toc"><div class="item-headline"><i class="fas fa-stream"></i><span>目录</span><span class="toc-percentage"></span></div><div class="toc-content"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%F0%9F%93%A6-CMake-SDK-%E6%89%93%E5%8C%85%E6%A8%A1%E5%BC%8F"><span class="toc-number">1.</span> <span class="toc-text">📦 CMake SDK 打包模式</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%96-%E6%A6%82%E8%BF%B0"><span class="toc-number">1.1.</span> <span class="toc-text">📖 概述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%8E%AF-%E5%AD%A6%E4%B9%A0%E7%9B%AE%E6%A0%87"><span class="toc-number">1.2.</span> <span class="toc-text">🎯 学习目标</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9A-%E6%A0%B8%E5%BF%83%E5%86%85%E5%AE%B9"><span class="toc-number">1.3.</span> <span class="toc-text">📚 核心内容</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.3.1.</span> <span class="toc-text">1. 基础概念</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-%E5%AE%9E%E7%8E%B0%E5%8E%9F%E7%90%86"><span class="toc-number">1.3.2.</span> <span class="toc-text">2. 实现原理</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#2-1-%E9%97%AE%E9%A2%98%EF%BC%9A%E6%A0%87%E5%87%86-install-EXPORT-%E7%9A%84%E4%B8%89%E4%B8%AA%E7%BC%BA%E9%99%B7"><span class="toc-number">1.3.2.1.</span> <span class="toc-text">2.1 问题：标准 install(EXPORT) 的三个缺陷</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-2-%E8%A7%A3%E5%86%B3%E6%96%B9%E6%A1%88%EF%BC%9Aauthforge-package-%E5%87%BD%E6%95%B0"><span class="toc-number">1.3.2.2.</span> <span class="toc-text">2.2 解决方案：authforge_package() 函数</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#2-3-Config-%E6%A8%A1%E6%9D%BF%E6%96%87%E4%BB%B6"><span class="toc-number">1.3.2.3.</span> <span class="toc-text">2.3 Config 模板文件</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#3-%E4%BB%A3%E7%A0%81%E7%A4%BA%E4%BE%8B"><span class="toc-number">1.3.3.</span> <span class="toc-text">3. 代码示例</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#3-1-%E6%AF%8F%E4%B8%AA%E5%8C%85%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="toc-number">1.3.3.1.</span> <span class="toc-text">3.1 每个包的使用</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-2-%E6%B6%88%E8%B4%B9%E8%80%85%E4%BD%BF%E7%94%A8%EF%BC%88install-tree%EF%BC%89"><span class="toc-number">1.3.3.2.</span> <span class="toc-text">3.2 消费者使用（install-tree）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-3-%E6%B6%88%E8%B4%B9%E8%80%85%E4%BD%BF%E7%94%A8%EF%BC%88build-tree%EF%BC%8C%E6%97%A0%E9%9C%80%E5%AE%89%E8%A3%85%EF%BC%89"><span class="toc-number">1.3.3.3.</span> <span class="toc-text">3.3 消费者使用（build-tree，无需安装）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#3-4-CI-%E4%B8%AD%E7%9A%84-SDK-smoke-test"><span class="toc-number">1.3.3.4.</span> <span class="toc-text">3.4 CI 中的 SDK smoke test</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#4-%E6%9C%80%E4%BD%B3%E5%AE%9E%E8%B7%B5"><span class="toc-number">1.3.4.</span> <span class="toc-text">4. 最佳实践</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link" href="#4-1-EXPORT-NAME-%E4%B8%8E-ALIAS-%E7%9A%84%E4%B8%80%E8%87%B4%E6%80%A7"><span class="toc-number">1.3.4.1.</span> <span class="toc-text">4.1 EXPORT_NAME 与 ALIAS 的一致性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-2-%E4%BC%A0%E9%80%92%E4%BE%9D%E8%B5%96%E9%97%AD%E5%8C%85%E7%9A%84%E5%AE%8C%E6%95%B4%E6%80%A7"><span class="toc-number">1.3.4.2.</span> <span class="toc-text">4.2 传递依赖闭包的完整性</span></a></li><li class="toc-item toc-level-4"><a class="toc-link" href="#4-3-SameMajorVersion-%E5%85%BC%E5%AE%B9%E6%80%A7"><span class="toc-number">1.3.4.3.</span> <span class="toc-text">4.3 SameMajorVersion 兼容性</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link" href="#5-%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="toc-number">1.3.5.</span> <span class="toc-text">5. 常见问题</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%94%97-%E7%9B%B8%E5%85%B3%E6%96%87%E6%A1%A3"><span class="toc-number">1.4.</span> <span class="toc-text">🔗 相关文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%9D-%E6%80%BB%E7%BB%93"><span class="toc-number">1.5.</span> <span class="toc-text">📝 总结</span></a></li></ol></li></ol></div></div><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/e248e336/" title="Conan 2 + CMake Presets 集成模式">Conan 2 + CMake Presets 集成模式</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/f7efedfd/" title="Feature Gating 条件编译模式">Feature Gating 条件编译模式</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/ab54f5ad/" title="CMake 函数式共享模块模式">CMake 函数式共享模块模式</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/05168a5f/" title="Windows + WSL2 Ubuntu + VSCode C++ 完整开发环境配置">Windows + WSL2 Ubuntu + VSCode C++ 完整开发环境配置</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/posts/a484ebf8/" title="Playwright E2E 自动化测试接入指南">Playwright E2E 自动化测试接入指南</a><time datetime="2026-08-13T15:24:58.000Z" title="发表于 2026-08-13 23:24:58">2026-08-13</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By lucas</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.1</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.3</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><a id="to_comment" href="#post-comment" title="前往评论"><i class="fas fa-comments"></i></a><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/js/utils.js?v=5.5.3"></script><script src="/js/main.js?v=5.5.3"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload@19.1.3/dist/lazyload.iife.min.js"></script><div class="js-pjax"><script>(() => {
+  const isShuoshuo = GLOBAL_CONFIG_SITE.pageType === 'shuoshuo'
+  const option = null
+
+  const getGiscusTheme = theme => theme === 'dark' ? 'dark' : 'light'
+
+  const createScriptElement = config => {
+    const ele = document.createElement('script')
+    Object.entries(config).forEach(([key, value]) => {
+      ele.setAttribute(key, value)
+    })
+    return ele
+  }
+
+  const loadGiscus = (el = document, key) => {
+    const mappingConfig = isShuoshuo
+      ? { 'data-mapping': 'specific', 'data-term': key }
+      : { 'data-mapping': (option && option['data-mapping']) || 'pathname' }
+
+    const giscusConfig = {
+      src: 'https://giscus.app/client.js',
+      'data-repo': 'lucaswang420/lucaswang420.github.io',
+      'data-repo-id': 'R_kgDOQkzqvg',
+      'data-category-id': 'DIC_kwDOQkzqvs4Cz99h',
+      'data-theme': getGiscusTheme(document.documentElement.getAttribute('data-theme')),
+      'data-reactions-enabled': '1',
+      crossorigin: 'anonymous',
+      async: true,
+      ...option,
+      ...mappingConfig
+    }
+
+    const scriptElement = createScriptElement(giscusConfig)
+
+    el.querySelector('#giscus-wrap').appendChild(scriptElement)
+
+    if (isShuoshuo) {
+      window.shuoshuoComment.destroyGiscus = () => {
+        if (el.children.length) {
+          el.innerHTML = ''
+          el.classList.add('no-comment')
+        }
+      }
+    }
+  }
+
+  const changeGiscusTheme = theme => {
+    const iframe = document.querySelector('#giscus-wrap iframe')
+    if (iframe) {
+      const message = {
+        giscus: {
+          setConfig: {
+            theme: getGiscusTheme(theme)
+          }
+        }
+      }
+      iframe.contentWindow.postMessage(message, 'https://giscus.app')
+    }
+  }
+
+  btf.addGlobalFn('themeChange', changeGiscusTheme, 'giscus')
+
+  if (isShuoshuo) {
+    'Giscus' === 'Giscus'
+      ? window.shuoshuoComment = { loadComment: loadGiscus }
+      : window.loadOtherComment = loadGiscus
+    return
+  }
+
+  if ('Giscus' === 'Giscus' || !true) {
+    if (true) btf.loadComment(document.getElementById('giscus-wrap'), loadGiscus)
+    else loadGiscus()
+  } else {
+    window.loadOtherComment = loadGiscus
+  }
+})()</script></div><script> document.addEventListener('DOMContentLoaded', function() { var announcement = document.createElement('div'); announcement.className = 'top-announcement'; announcement.innerHTML = '🚀 欢迎来到 CodeVerse 技术宇宙！'; document.body.insertBefore(announcement, document.body.firstChild); }); </script><script id="canvas_nest" defer="defer" color="102,204,255" opacity="0.6" zIndex="-1" count="99" mobile="false" src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/dist/canvas-nest.min.js"></script><script src="https://cdn.jsdelivr.net/npm/pjax@0.2.8/pjax.min.js" defer="defer"></script><script>document.addEventListener('DOMContentLoaded', () => {
+  const pjaxSelectors = ["meta[property=\"og:image\"]","meta[property=\"og:title\"]","meta[property=\"og:url\"]","meta[property=\"og:description\"]","link[rel=\"canonical\"]","head > title","#config-diff","#body-wrap","#rightside-config-hide","#rightside-config-show",".js-pjax"]
+
+  window.pjax = new Pjax({
+    elements: 'a:not([target="_blank"])',
+    selectors: pjaxSelectors,
+    cacheBust: false,
+    analytics: false,
+    scrollRestoration: false
+  })
+
+  const triggerPjaxFn = (val) => {
+    if (!val) return
+    Object.values(val).forEach(fn => {
+      try {
+        fn()
+      } catch (err) {
+        console.debug('Pjax callback failed:', err)
+      }
+    })
+  }
+
+  document.addEventListener('pjax:send', () => {
+    // removeEventListener
+    btf.removeGlobalFnEvent('pjaxSendOnce')
+    btf.removeGlobalFnEvent('themeChange')
+
+    // reset readmode
+    const $bodyClassList = document.body.classList
+    if ($bodyClassList.contains('read-mode')) $bodyClassList.remove('read-mode')
+
+    triggerPjaxFn(window.globalFn.pjaxSend)
+  })
+
+  document.addEventListener('pjax:complete', () => {
+    btf.removeGlobalFnEvent('pjaxCompleteOnce')
+    document.querySelectorAll('script[data-pjax]').forEach(item => {
+      const newScript = document.createElement('script')
+      const content = item.text || item.textContent || item.innerHTML || ""
+      Array.from(item.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value))
+      newScript.appendChild(document.createTextNode(content))
+      item.parentNode.replaceChild(newScript, item)
+    })
+
+    triggerPjaxFn(window.globalFn.pjaxComplete)
+  })
+
+  document.addEventListener('pjax:error', e => {
+    if (e.request.status === 404) {
+      false
+        ? pjax.loadUrl('/404.html')
+        : window.location.href = e.request.responseURL
+    }
+  })
+})</script><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script><div id="local-search"><div class="search-dialog"><nav class="search-nav"><span class="search-dialog-title">搜索</span><i class="fas fa-spinner fa-pulse" id="loading-status" hidden="hidden"></i><button class="search-close-button"><i class="fas fa-times"></i></button></nav><div class="text-center" id="loading-database"><i class="fas fa-spinner fa-pulse"></i><span>  数据加载中</span></div><div class="local-search-input"><input placeholder="搜索文章" type="text"/></div><hr/><div id="local-search-results"></div><div class="ais-Pagination" id="local-search-pagination" style="display:none;"><ul class="ais-Pagination-list"></ul></div><div id="local-search-stats"></div></div><div id="search-mask"></div><script src="/js/search/local-search.js?v=5.5.3"></script></div></div></body></html>
